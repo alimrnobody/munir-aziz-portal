@@ -54,7 +54,7 @@ export const Navbar = ({ userEmail, isAdmin, onLogout }: NavbarProps) => {
           )}
           {userEmail && (
             <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/40 border border-border/30">
-              <div className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               <span className="text-xs text-muted-foreground font-mono">{userEmail}</span>
             </div>
           )}

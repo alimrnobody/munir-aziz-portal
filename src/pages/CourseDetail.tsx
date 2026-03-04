@@ -57,7 +57,7 @@ const CourseDetail = () => {
           className="mb-10"
         >
           <div className="flex items-center gap-2 mb-3">
-            <Layers size={14} className="text-neon-cyan" />
+            <Layers size={14} className="text-primary" />
             <span className="text-[10px] font-display tracking-[0.4em] uppercase text-muted-foreground">
               COURSE MODULE
             </span>

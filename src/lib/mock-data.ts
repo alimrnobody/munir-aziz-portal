@@ -60,28 +60,28 @@ export const mockCourses: Course[] = [
     ],
   },
   {
-    id: "web-hacking",
-    title: "Ethical Hacking Bootcamp",
-    description: "Learn penetration testing, vulnerability assessment, and ethical hacking techniques.",
+    id: "video-editing",
+    title: "Video Editing Mastery",
+    description: "Learn professional video editing techniques, color grading, transitions, and effects.",
     thumbnail: "",
     progress: 0,
     phases: [
       {
         id: "p4",
-        title: "Phase 1 — Recon & Enumeration",
+        title: "Phase 1 — Editing Fundamentals",
         locked: false,
         lessons: [
-          { id: "l8", title: "Information Gathering", duration: "15:00", completed: false },
-          { id: "l9", title: "Network Scanning", duration: "22:00", completed: false },
+          { id: "l8", title: "Timeline & Cutting Basics", duration: "15:00", completed: false },
+          { id: "l9", title: "Transitions & Effects", duration: "22:00", completed: false },
         ],
       },
       {
         id: "p5",
-        title: "Phase 2 — Exploitation",
+        title: "Phase 2 — Advanced Techniques",
         locked: true,
         lessons: [
-          { id: "l10", title: "Common Vulnerabilities", duration: "30:00", completed: false },
-          { id: "l11", title: "Post-Exploitation", duration: "25:00", completed: false },
+          { id: "l10", title: "Color Grading & LUTs", duration: "30:00", completed: false },
+          { id: "l11", title: "Motion Graphics & Export", duration: "25:00", completed: false },
         ],
       },
     ],

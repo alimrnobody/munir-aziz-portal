@@ -86,7 +86,7 @@ export const PhaseAccordion = ({ phase, courseId, index }: PhaseAccordionProps) 
                   className="w-full flex items-center gap-4 p-3.5 rounded-xl hover:bg-secondary/40 transition-all duration-300 group text-left"
                 >
                   {lesson.completed ? (
-                    <CheckCircle2 size={16} className="text-neon-green shrink-0" />
+                    <CheckCircle2 size={16} className="text-primary shrink-0" />
                   ) : (
                     <PlayCircle size={16} className="text-primary shrink-0 group-hover:text-neon-pink transition-colors duration-300" />
                   )}

@@ -67,7 +67,7 @@ const LessonPlayer = () => {
                 Duration: {lesson.duration}
               </span>
               {lesson.completed && (
-                <div className="flex items-center gap-1.5 text-neon-green text-xs">
+                <div className="flex items-center gap-1.5 text-primary text-xs">
                   <CheckCircle size={12} />
                   <span className="font-display tracking-wider">COMPLETED</span>
                 </div>
