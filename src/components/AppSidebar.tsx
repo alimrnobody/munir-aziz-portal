@@ -40,10 +40,10 @@ export function AppSidebar() {
               </div>
               <div className="flex flex-col">
                 <NeonText as="span" gradient className="text-xs tracking-[0.2em] leading-none">
-                  MR NOBODY
+                  ELITE SQUAD
                 </NeonText>
-                <span className="text-[8px] tracking-[0.3em] text-muted-foreground uppercase font-display">
-                  SQUAD
+                <span className="text-[7px] tracking-[0.3em] text-muted-foreground uppercase font-display">
+                  BY MR NOBODY
                 </span>
               </div>
             </div>
