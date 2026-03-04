@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Users, BookOpen, Upload, Lock, Unlock, Trash2, Plus, ShieldCheck } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
+import { DashboardLayout } from "@/components/DashboardLayout";
 import { GlassCard } from "@/components/GlassCard";
 import { NeonText } from "@/components/NeonText";
 import { Button } from "@/components/ui/button";
-import { mockCourses, mockUser } from "@/lib/mock-data";
-import { useNavigate } from "react-router-dom";
+import { mockCourses } from "@/lib/mock-data";
 
 type Tab = "users" | "courses";
 
@@ -17,22 +16,11 @@ const mockUsers = [
 ];
 
 const Admin = () => {
-  const navigate = useNavigate();
   const [tab, setTab] = useState<Tab>("users");
 
   return (
-    <div className="min-h-screen cyber-grid particle-field">
-      <Navbar userEmail={mockUser.email} isAdmin={true} onLogout={() => navigate("/")} />
-
-      <div className="fixed inset-0 pointer-events-none -z-10">
-        <motion.div
-          animate={{ opacity: [0.04, 0.08, 0.04] }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary rounded-full blur-[200px]"
-        />
-      </div>
-
-      <main className="container mx-auto px-4 py-10 relative">
+    <DashboardLayout>
+      <div className="p-6 lg:p-10">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="mb-10">
           <div className="flex items-center gap-2 mb-3">
             <ShieldCheck size={14} className="text-primary" />
@@ -46,19 +34,12 @@ const Admin = () => {
           <p className="text-muted-foreground text-sm">Manage users, courses, and content.</p>
         </motion.div>
 
-        {/* Tabs */}
         <div className="flex gap-2 mb-8">
           {([
             { key: "users" as Tab, label: "Users", icon: Users },
             { key: "courses" as Tab, label: "Courses", icon: BookOpen },
           ]).map(({ key, label, icon: Icon }) => (
-            <Button
-              key={key}
-              variant={tab === key ? "neon" : "neon-outline"}
-              size="sm"
-              onClick={() => setTab(key)}
-              className="gap-1.5"
-            >
+            <Button key={key} variant={tab === key ? "neon" : "neon-outline"} size="sm" onClick={() => setTab(key)} className="gap-1.5">
               <Icon size={13} />
               {label}
             </Button>
@@ -71,7 +52,6 @@ const Admin = () => {
               <NeonText as="h3" glow className="text-lg">User Management</NeonText>
               <Button variant="neon" size="sm" className="gap-1.5"><Plus size={13} /> Add User</Button>
             </div>
-
             <GlassCard glow className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -84,13 +64,8 @@ const Admin = () => {
                 </thead>
                 <tbody>
                   {mockUsers.map((user, i) => (
-                    <motion.tr
-                      key={user.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="border-b border-border/10 hover:bg-secondary/20 transition-colors duration-300"
-                    >
+                    <motion.tr key={user.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}
+                      className="border-b border-border/10 hover:bg-secondary/20 transition-colors duration-300">
                       <td className="py-3.5 px-4 text-foreground font-medium">{user.name}</td>
                       <td className="py-3.5 px-4 text-muted-foreground font-mono text-xs">{user.email}</td>
                       <td className="py-3.5 px-4">
@@ -121,17 +96,10 @@ const Admin = () => {
               <NeonText as="h3" glow className="text-lg">Course Management</NeonText>
               <Button variant="neon" size="sm" className="gap-1.5"><Plus size={13} /> New Course</Button>
             </div>
-
             <div className="space-y-4">
               {mockCourses.map((course, i) => (
-                <GlassCard
-                  key={course.id}
-                  glow
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                >
+                <GlassCard key={course.id} glow initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
                     <NeonText as="h4" glow className="text-sm mb-1">{course.title}</NeonText>
                     <p className="text-xs text-muted-foreground">
@@ -154,8 +122,8 @@ const Admin = () => {
             </div>
           </motion.div>
         )}
-      </main>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 };
 

@@ -8,42 +8,30 @@
   :root {
     --background: 260 20% 5%;
     --foreground: 0 0% 95%;
-
     --card: 260 25% 8%;
     --card-foreground: 0 0% 95%;
-
     --popover: 260 25% 8%;
     --popover-foreground: 0 0% 95%;
-
     --primary: 270 80% 55%;
     --primary-foreground: 0 0% 100%;
-
     --secondary: 260 30% 15%;
     --secondary-foreground: 0 0% 90%;
-
     --muted: 260 20% 12%;
     --muted-foreground: 260 10% 55%;
-
     --accent: 270 80% 50%;
     --accent-foreground: 0 0% 100%;
-
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
-
     --border: 260 30% 18%;
     --input: 260 30% 15%;
     --ring: 270 80% 55%;
-
     --radius: 0.75rem;
-
     --neon-purple: 270 100% 65%;
     --neon-pink: 280 80% 55%;
     --neon-cyan: 260 90% 70%;
     --neon-green: 270 60% 75%;
-
     --glass-bg: 260 25% 10%;
     --glass-border: 260 40% 25%;
-
     --sidebar-background: 260 25% 6%;
     --sidebar-foreground: 0 0% 90%;
     --sidebar-primary: 270 80% 55%;
@@ -52,6 +40,42 @@
     --sidebar-accent-foreground: 0 0% 90%;
     --sidebar-border: 260 30% 18%;
     --sidebar-ring: 270 80% 55%;
+  }
+
+  .light {
+    --background: 240 10% 96%;
+    --foreground: 260 20% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 260 20% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 260 20% 15%;
+    --primary: 270 70% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 260 15% 92%;
+    --secondary-foreground: 260 20% 30%;
+    --muted: 260 10% 93%;
+    --muted-foreground: 260 10% 45%;
+    --accent: 270 70% 48%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 260 15% 87%;
+    --input: 260 15% 90%;
+    --ring: 270 70% 50%;
+    --neon-purple: 270 80% 55%;
+    --neon-pink: 280 60% 50%;
+    --neon-cyan: 260 70% 55%;
+    --neon-green: 270 50% 60%;
+    --glass-bg: 0 0% 100%;
+    --glass-border: 260 20% 85%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 260 20% 20%;
+    --sidebar-primary: 270 70% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 260 15% 94%;
+    --sidebar-accent-foreground: 260 20% 20%;
+    --sidebar-border: 260 15% 90%;
+    --sidebar-ring: 270 70% 50%;
   }
 }
 
@@ -62,12 +86,20 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+    min-height: 100vh;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  .dark body,
+  :root body {
     background: 
       radial-gradient(ellipse 80% 50% at 50% -20%, hsla(270, 80%, 35%, 0.15), transparent),
-      radial-gradient(ellipse 60% 40% at 80% 100%, hsla(320, 100%, 40%, 0.08), transparent),
-      radial-gradient(ellipse 50% 50% at 20% 80%, hsla(270, 100%, 45%, 0.06), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%, hsla(280, 80%, 40%, 0.08), transparent),
       linear-gradient(180deg, hsl(260 20% 3%) 0%, hsl(270 25% 5%) 50%, hsl(260 20% 3%) 100%);
-    min-height: 100vh;
+  }
+
+  .light body {
+    background: linear-gradient(180deg, hsl(240 10% 96%) 0%, hsl(260 12% 94%) 100%);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -83,6 +115,13 @@
     box-shadow: 
       inset 0 1px 0 0 hsla(0 0% 100% / 0.03),
       0 4px 24px -4px hsla(270 100% 30% / 0.12);
+    transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .light .glass {
+    background: hsla(0 0% 100% / 0.7);
+    box-shadow: 0 1px 3px hsla(260 20% 50% / 0.08), 0 4px 16px hsla(260 20% 50% / 0.04);
+    border: 1px solid hsla(260 20% 50% / 0.1);
   }
 
   .glass-strong {
@@ -92,6 +131,13 @@
     box-shadow: 
       inset 0 1px 0 0 hsla(0 0% 100% / 0.05),
       0 8px 32px -4px hsla(270 100% 30% / 0.18);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+  }
+
+  .light .glass-strong {
+    background: hsla(0 0% 100% / 0.85);
+    box-shadow: 0 1px 4px hsla(260 20% 50% / 0.06);
+    border: 1px solid hsla(260 20% 50% / 0.12);
   }
 
   .neon-glow {
@@ -100,22 +146,30 @@
                 inset 0 0 15px hsla(var(--neon-purple) / 0.05);
   }
 
+  .light .neon-glow {
+    box-shadow: 0 0 8px hsla(var(--neon-purple) / 0.15),
+                0 2px 12px hsla(var(--neon-purple) / 0.08);
+  }
+
   .neon-glow-strong {
     box-shadow: 0 0 20px hsla(var(--neon-purple) / 0.5),
                 0 0 40px hsla(var(--neon-purple) / 0.25),
-                0 0 80px hsla(var(--neon-purple) / 0.15),
-                0 0 120px hsla(var(--neon-purple) / 0.05);
+                0 0 80px hsla(var(--neon-purple) / 0.15);
   }
 
-  .neon-glow-pink {
-    box-shadow: 0 0 15px hsla(var(--neon-pink) / 0.3),
-                0 0 30px hsla(var(--neon-pink) / 0.15);
+  .light .neon-glow-strong {
+    box-shadow: 0 0 12px hsla(var(--neon-purple) / 0.2),
+                0 4px 20px hsla(var(--neon-purple) / 0.1);
   }
 
   .neon-text {
     text-shadow: 0 0 10px hsla(var(--neon-purple) / 0.8),
                  0 0 20px hsla(var(--neon-purple) / 0.4),
                  0 0 40px hsla(var(--neon-purple) / 0.2);
+  }
+
+  .light .neon-text {
+    text-shadow: none;
   }
 
   .gradient-neon {
@@ -148,6 +202,12 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
+    opacity: 0.6;
+    transition: opacity 0.4s ease;
+  }
+
+  .light .gradient-border::before {
+    opacity: 0.3;
   }
 
   .cyber-grid {
@@ -155,6 +215,10 @@
       linear-gradient(hsla(var(--neon-purple) / 0.03) 1px, transparent 1px),
       linear-gradient(90deg, hsla(var(--neon-purple) / 0.03) 1px, transparent 1px);
     background-size: 60px 60px;
+  }
+
+  .light .cyber-grid {
+    background-image: none;
   }
 
   .scan-line {
@@ -165,15 +229,14 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      hsla(var(--neon-purple) / 0.03) 50%,
-      transparent 100%
-    );
+    background: linear-gradient(180deg, transparent 0%, hsla(var(--neon-purple) / 0.03) 50%, transparent 100%);
     background-size: 100% 4px;
     pointer-events: none;
     animation: scanLines 8s linear infinite;
+  }
+
+  .light .scan-line::after {
+    display: none;
   }
 
   .animate-float {
@@ -205,11 +268,13 @@
       radial-gradient(1px 1px at 55% 15%, hsla(var(--neon-cyan) / 0.35) 50%, transparent 50%),
       radial-gradient(1px 1px at 70% 80%, hsla(var(--neon-purple) / 0.25) 50%, transparent 50%),
       radial-gradient(1px 1px at 85% 40%, hsla(var(--neon-pink) / 0.3) 50%, transparent 50%),
-      radial-gradient(1.5px 1.5px at 45% 90%, hsla(var(--neon-cyan) / 0.2) 50%, transparent 50%),
-      radial-gradient(1px 1px at 20% 50%, hsla(var(--neon-purple) / 0.3) 50%, transparent 50%),
-      radial-gradient(1px 1px at 90% 10%, hsla(var(--neon-pink) / 0.25) 50%, transparent 50%);
+      radial-gradient(1.5px 1.5px at 45% 90%, hsla(var(--neon-cyan) / 0.2) 50%, transparent 50%);
     pointer-events: none;
     animation: particleDrift 20s ease-in-out infinite alternate;
+  }
+
+  .light .particle-field::before {
+    display: none;
   }
 }
 
@@ -220,13 +285,10 @@
 
 @keyframes pulseGlow {
   0%, 100% { 
-    box-shadow: 0 0 15px hsla(270, 100%, 65%, 0.3),
-                0 0 30px hsla(270, 100%, 65%, 0.1);
+    box-shadow: 0 0 15px hsla(270, 100%, 65%, 0.3), 0 0 30px hsla(270, 100%, 65%, 0.1);
   }
   50% { 
-    box-shadow: 0 0 25px hsla(270, 100%, 65%, 0.6),
-                0 0 50px hsla(270, 100%, 65%, 0.3),
-                0 0 80px hsla(270, 100%, 65%, 0.1);
+    box-shadow: 0 0 25px hsla(270, 100%, 65%, 0.6), 0 0 50px hsla(270, 100%, 65%, 0.3);
   }
 }
 
@@ -259,17 +321,13 @@
   width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(260, 20%, 4%);
+  background: hsl(var(--background));
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, hsl(270, 80%, 40%), hsl(320, 80%, 45%));
+  background: linear-gradient(180deg, hsl(270, 80%, 40%), hsl(280, 80%, 45%));
   border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, hsl(270, 80%, 50%), hsl(320, 80%, 55%));
-}
 
-/* Selection */
 ::selection {
   background: hsla(270, 100%, 65%, 0.3);
   color: hsl(0, 0%, 100%);
