@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Orbitron", "monospace"],
+        display: ["Rajdhani", "Orbitron", "sans-serif"],
         body: ["Space Grotesk", "Inter", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],
       },
