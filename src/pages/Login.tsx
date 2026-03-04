@@ -65,10 +65,10 @@ const Login = () => {
               transition={{ delay: 0.4 }}
             >
               <NeonText gradient className="text-2xl sm:text-3xl mb-1">
-                MR NOBODY
+                ELITE SQUAD
               </NeonText>
               <div className="text-[10px] font-display tracking-[0.5em] text-muted-foreground uppercase mb-4">
-                SQUAD PRIVATE TRAINING
+                BY MR NOBODY
               </div>
               <p className="text-sm text-muted-foreground">
                 Authenticate to access the portal

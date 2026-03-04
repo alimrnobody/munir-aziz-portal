@@ -30,11 +30,11 @@ export const Navbar = ({ userEmail, isAdmin, onLogout }: NavbarProps) => {
             <div className="absolute -inset-1 rounded-lg gradient-neon opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-500" />
           </div>
           <div className="flex flex-col">
-            <NeonText as="span" gradient className="text-sm sm:text-base tracking-[0.25em] leading-none">
-              MR NOBODY
+            <NeonText as="span" gradient className="text-sm sm:text-base tracking-[0.2em] leading-none">
+              ELITE SQUAD
             </NeonText>
-            <span className="text-[9px] tracking-[0.4em] text-muted-foreground uppercase font-display">
-              SQUAD
+            <span className="text-[8px] tracking-[0.3em] text-muted-foreground uppercase font-display">
+              BY MR NOBODY
             </span>
           </div>
         </button>

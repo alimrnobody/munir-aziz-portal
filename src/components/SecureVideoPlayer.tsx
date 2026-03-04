@@ -11,7 +11,7 @@ interface SecureVideoPlayerProps {
 export const SecureVideoPlayer = ({
   videoUrl,
   watermarkText,
-  watermarkSubtext = "Mr Nobody Squad Private Training",
+  watermarkSubtext = "Elite Squad By Mr Nobody - Private Training",
 }: SecureVideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
