@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Layers } from "lucide-react";
+import { ArrowLeft, Layers, Target } from "lucide-react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { PhaseAccordion } from "@/components/PhaseAccordion";
 import { NeonText } from "@/components/NeonText";
@@ -36,9 +36,9 @@ const CourseDetail = () => {
             variant="ghost"
             size="sm"
             onClick={() => navigate("/dashboard")}
-            className="mb-8 text-muted-foreground hover:text-foreground gap-2"
+            className="mb-8 text-muted-foreground hover:text-foreground gap-2 group"
           >
-            <ArrowLeft size={14} />
+            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
             Back to courses
           </Button>
         </motion.div>
@@ -49,28 +49,52 @@ const CourseDetail = () => {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="mb-10"
         >
-          <div className="flex items-center gap-2 mb-3">
-            <Layers size={14} className="text-primary" />
+          <div className="flex items-center gap-2 mb-4">
+            <Target size={14} className="text-primary" />
             <span className="text-[10px] font-display tracking-[0.4em] uppercase text-muted-foreground">
               COURSE MODULE
             </span>
           </div>
 
-          <NeonText gradient className="text-3xl sm:text-4xl mb-3">
+          <NeonText gradient className="text-3xl sm:text-4xl mb-4">
             {course.title}
           </NeonText>
-          <p className="text-muted-foreground mb-6 leading-relaxed">{course.description}</p>
+          <p className="text-muted-foreground mb-8 leading-relaxed">{course.description}</p>
 
-          <div className="glass rounded-2xl p-5 flex items-center gap-6">
-            <ProgressRing progress={course.progress} size={56} strokeWidth={4} />
-            <div>
+          {/* Progress card */}
+          <div className="glass glass-hover rounded-2xl p-6 flex items-center gap-6">
+            <ProgressRing progress={course.progress} size={64} strokeWidth={4} />
+            <div className="space-y-1.5">
               <div className="text-sm text-muted-foreground">
-                <span className="font-display text-foreground">{completedLessons}</span> / {totalLessons} lessons completed
+                <span className="font-display text-foreground font-bold text-lg">{completedLessons}</span>
+                <span className="text-muted-foreground mx-1">/</span>
+                <span>{totalLessons} lessons completed</span>
               </div>
-              <div className="text-xs text-muted-foreground mt-1">{course.phases.length} phases</div>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Layers size={12} className="text-primary/60" />
+                <span>{course.phases.length} phases</span>
+              </div>
+              {/* Mini progress bar */}
+              <div className="w-40 h-1.5 bg-secondary/40 rounded-full overflow-hidden mt-1">
+                <motion.div
+                  className="h-full gradient-neon rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${course.progress}%` }}
+                  transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                />
+              </div>
             </div>
           </div>
         </motion.div>
+
+        {/* Section divider */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="h-px flex-1 bg-gradient-to-r from-border/50 to-transparent" />
+          <span className="text-[10px] font-display tracking-[0.3em] uppercase text-muted-foreground">
+            Phases
+          </span>
+          <div className="h-px flex-1 bg-gradient-to-l from-border/50 to-transparent" />
+        </div>
 
         <div className="space-y-3">
           {course.phases.map((phase, i) => (

@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 interface ProgressRingProps {
   progress: number;
   size?: number;
@@ -20,8 +22,9 @@ export const ProgressRing = ({ progress, size = 48, strokeWidth = 4, className =
           fill="none"
           stroke="hsl(var(--secondary))"
           strokeWidth={strokeWidth}
+          opacity={0.4}
         />
-        <circle
+        <motion.circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
@@ -29,14 +32,17 @@ export const ProgressRing = ({ progress, size = 48, strokeWidth = 4, className =
           stroke="url(#progressGradient)"
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
-          strokeDashoffset={offset}
+          initial={{ strokeDashoffset: circumference }}
+          animate={{ strokeDashoffset: offset }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
           strokeLinecap="round"
-          className="transition-all duration-1000 ease-out"
+          style={{ filter: "drop-shadow(0 0 4px hsla(270, 100%, 65%, 0.4))" }}
         />
         <defs>
           <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="hsl(var(--neon-purple))" />
-            <stop offset="100%" stopColor="hsl(var(--neon-pink))" />
+            <stop offset="50%" stopColor="hsl(var(--neon-pink))" />
+            <stop offset="100%" stopColor="hsl(var(--neon-blue))" />
           </linearGradient>
         </defs>
       </svg>
