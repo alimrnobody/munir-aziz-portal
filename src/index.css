@@ -24,7 +24,7 @@
     --muted: 260 20% 12%;
     --muted-foreground: 260 10% 55%;
 
-    --accent: 280 90% 60%;
+    --accent: 270 80% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 70% 50%;
@@ -37,9 +37,9 @@
     --radius: 0.75rem;
 
     --neon-purple: 270 100% 65%;
-    --neon-pink: 320 100% 60%;
-    --neon-cyan: 185 100% 55%;
-    --neon-green: 150 100% 50%;
+    --neon-pink: 280 80% 55%;
+    --neon-cyan: 260 90% 70%;
+    --neon-green: 270 60% 75%;
 
     --glass-bg: 260 25% 10%;
     --glass-border: 260 40% 25%;

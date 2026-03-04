@@ -44,7 +44,7 @@ const Dashboard = () => {
           className="mb-12"
         >
           <div className="flex items-center gap-2 mb-3">
-            <Sparkles size={14} className="text-neon-cyan" />
+            <Sparkles size={14} className="text-primary" />
             <span className="text-xs font-display tracking-[0.4em] uppercase text-muted-foreground">
               Welcome back, Agent
             </span>
@@ -66,8 +66,8 @@ const Dashboard = () => {
         >
           {[
             { label: "Courses", value: mockCourses.length, color: "text-primary" },
-            { label: "Completed", value: mockCourses.filter(c => c.progress === 100).length, color: "text-neon-green" },
-            { label: "In Progress", value: mockCourses.filter(c => c.progress > 0 && c.progress < 100).length, color: "text-neon-cyan" },
+            { label: "Completed", value: mockCourses.filter(c => c.progress === 100).length, color: "text-accent" },
+            { label: "In Progress", value: mockCourses.filter(c => c.progress > 0 && c.progress < 100).length, color: "text-primary" },
           ].map((stat) => (
             <div key={stat.label} className="glass rounded-xl p-3 text-center">
               <div className={`text-2xl font-display font-bold ${stat.color}`}>{stat.value}</div>

@@ -35,7 +35,7 @@ const Admin = () => {
       <main className="container mx-auto px-4 py-10 relative">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="mb-10">
           <div className="flex items-center gap-2 mb-3">
-            <ShieldCheck size={14} className="text-neon-cyan" />
+            <ShieldCheck size={14} className="text-primary" />
             <span className="text-[10px] font-display tracking-[0.4em] uppercase text-muted-foreground">
               ADMIN CONTROL CENTER
             </span>
@@ -96,7 +96,7 @@ const Admin = () => {
                       <td className="py-3.5 px-4">
                         <span className={`text-[10px] font-display tracking-wider px-2.5 py-1 rounded-full ${
                           user.status === "active"
-                            ? "bg-neon-green/10 text-neon-green border border-neon-green/20"
+                            ? "bg-primary/10 text-primary border border-primary/20"
                             : "bg-destructive/10 text-destructive border border-destructive/20"
                         }`}>
                           {user.status.toUpperCase()}
@@ -145,7 +145,7 @@ const Admin = () => {
                         {phase.title.replace(/Phase \d+ — /, "")}
                       </Button>
                     ))}
-                    <Button variant="ghost" size="sm" className="text-neon-cyan gap-1 text-xs">
+                    <Button variant="ghost" size="sm" className="text-primary gap-1 text-xs">
                       <Upload size={11} /> Upload
                     </Button>
                   </div>

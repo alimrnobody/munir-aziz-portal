@@ -74,7 +74,7 @@ export const CourseCard = ({ course, index }: CourseCardProps) => {
       <div className="flex items-center justify-between mt-2">
         <p className="text-xs text-muted-foreground">{course.progress}% complete</p>
         {course.progress === 100 && (
-          <span className="text-[10px] font-display tracking-widest text-neon-green uppercase">Completed</span>
+          <span className="text-[10px] font-display tracking-widest text-primary uppercase">Completed</span>
         )}
       </div>
     </GlassCard>
