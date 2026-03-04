@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { BookOpen, ChevronRight, Zap } from "lucide-react";
+import { BookOpen, ChevronRight, Zap, Layers } from "lucide-react";
 import { GlassCard } from "./GlassCard";
 import { NeonText } from "./NeonText";
 import { ProgressRing } from "./ProgressRing";
@@ -20,15 +20,19 @@ export const CourseCard = ({ course, index }: CourseCardProps) => {
   );
 
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: y * -8, y: x * 8 });
+    setTilt({ x: y * -10, y: x * 10 });
   };
 
-  const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+    setIsHovered(false);
+  };
 
   return (
     <motion.div
@@ -36,10 +40,11 @@ export const CourseCard = ({ course, index }: CourseCardProps) => {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay: index * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       style={{
-        transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-        transition: "transform 0.15s ease-out",
+        transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+        transition: "transform 0.2s ease-out",
       }}
       onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
     >
       <GlassCard
@@ -48,54 +53,78 @@ export const CourseCard = ({ course, index }: CourseCardProps) => {
         className="cursor-pointer group h-full"
         onClick={() => navigate(`/course/${course.id}`)}
       >
-        {/* Animated gradient top bar */}
-        <div className="h-1 w-full gradient-neon rounded-full mb-6 opacity-60 group-hover:opacity-100 transition-opacity" />
-
-        <div className="flex items-start justify-between mb-4">
-          <div className="w-10 h-10 rounded-xl gradient-neon-subtle flex items-center justify-center group-hover:neon-glow transition-shadow duration-500">
-            <Zap size={18} className="text-primary" />
-          </div>
-          <ProgressRing progress={course.progress} size={52} strokeWidth={3} />
-        </div>
-
-        <div className="flex items-start justify-between mb-2">
-          <NeonText as="h3" glow className="text-base leading-tight flex-1 mr-2">
-            {course.title}
-          </NeonText>
-          <ChevronRight 
-            className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 shrink-0 mt-0.5" 
-            size={18}
+        {/* Top gradient accent bar */}
+        <div className="h-1 w-full rounded-full mb-6 overflow-hidden relative">
+          <motion.div 
+            className="h-full gradient-neon"
+            initial={{ width: "30%" }}
+            animate={{ width: isHovered ? "100%" : "60%" }}
+            transition={{ duration: 0.5 }}
           />
         </div>
 
-        <p className="text-sm text-muted-foreground mb-5 line-clamp-2 leading-relaxed">
+        <div className="flex items-start justify-between mb-5">
+          <div className="w-12 h-12 rounded-xl gradient-neon-subtle flex items-center justify-center group-hover:neon-glow transition-all duration-500 relative">
+            <Zap size={20} className="text-primary" />
+            {isHovered && (
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 0.3 }}
+                className="absolute -inset-2 rounded-xl gradient-neon blur-lg"
+              />
+            )}
+          </div>
+          <ProgressRing progress={course.progress} size={56} strokeWidth={3} />
+        </div>
+
+        <div className="flex items-start justify-between mb-3">
+          <NeonText as="h3" glow className="text-base leading-tight flex-1 mr-3">
+            {course.title}
+          </NeonText>
+          <motion.div
+            animate={{ x: isHovered ? 4 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ChevronRight 
+              className="text-muted-foreground group-hover:text-primary transition-colors duration-300 shrink-0 mt-0.5" 
+              size={18}
+            />
+          </motion.div>
+        </div>
+
+        <p className="text-sm text-muted-foreground mb-6 line-clamp-2 leading-relaxed">
           {course.description}
         </p>
 
-        <div className="flex items-center gap-3 text-xs text-muted-foreground mb-5">
-          <div className="flex items-center gap-1.5 bg-secondary/50 px-2.5 py-1 rounded-full">
-            <BookOpen size={12} />
-            <span>{completedLessons}/{totalLessons} lessons</span>
+        <div className="flex items-center gap-3 text-xs text-muted-foreground mb-6">
+          <div className="flex items-center gap-1.5 bg-secondary/40 px-3 py-1.5 rounded-full border border-border/20">
+            <BookOpen size={12} className="text-primary/70" />
+            <span className="font-mono">{completedLessons}/{totalLessons}</span>
           </div>
-          <div className="flex items-center gap-1.5 bg-secondary/50 px-2.5 py-1 rounded-full">
-            <span>{course.phases.length} phases</span>
+          <div className="flex items-center gap-1.5 bg-secondary/40 px-3 py-1.5 rounded-full border border-border/20">
+            <Layers size={12} className="text-primary/70" />
+            <span className="font-mono">{course.phases.length} phases</span>
           </div>
         </div>
 
         {/* Progress bar */}
-        <div className="relative w-full h-1.5 bg-secondary/60 rounded-full overflow-hidden">
+        <div className="relative w-full h-2 bg-secondary/40 rounded-full overflow-hidden">
           <motion.div
             className="h-full gradient-neon rounded-full relative"
             initial={{ width: 0 }}
             animate={{ width: `${course.progress}%` }}
-            transition={{ delay: index * 0.12 + 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: index * 0.12 + 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" 
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent animate-shimmer" 
                  style={{ backgroundSize: '200% 100%' }} />
           </motion.div>
         </div>
+        
         {course.progress === 100 && (
-          <span className="text-[10px] font-display tracking-widest text-primary uppercase mt-2 inline-block">Completed</span>
+          <div className="flex items-center gap-1.5 mt-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            <span className="text-[10px] font-display tracking-[0.2em] text-primary uppercase">Completed</span>
+          </div>
         )}
       </GlassCard>
     </motion.div>
