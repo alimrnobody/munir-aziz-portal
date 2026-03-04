@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Layers } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { PhaseAccordion } from "@/components/PhaseAccordion";
 import { NeonText } from "@/components/NeonText";
@@ -26,45 +26,66 @@ const CourseDetail = () => {
   );
 
   return (
-    <div className="min-h-screen cyber-grid">
+    <div className="min-h-screen cyber-grid particle-field">
       <Navbar userEmail={mockUser.email} isAdmin={true} onLogout={() => navigate("/")} />
 
       <div className="fixed inset-0 pointer-events-none -z-10">
-        <div className="absolute top-20 left-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-[150px]" />
+        <motion.div
+          animate={{ opacity: [0.04, 0.08, 0.04] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-primary rounded-full blur-[250px]"
+        />
       </div>
 
-      <main className="container mx-auto px-4 py-8 max-w-3xl">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate("/dashboard")}
-          className="mb-6 text-muted-foreground"
-        >
-          <ArrowLeft size={16} />
-          Back to courses
-        </Button>
+      <main className="container mx-auto px-4 py-8 max-w-3xl relative">
+        <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/dashboard")}
+            className="mb-8 text-muted-foreground hover:text-foreground gap-2"
+          >
+            <ArrowLeft size={14} />
+            Back to courses
+          </Button>
+        </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-10"
         >
-          <NeonText gradient className="text-2xl sm:text-3xl mb-2">
+          <div className="flex items-center gap-2 mb-3">
+            <Layers size={14} className="text-neon-cyan" />
+            <span className="text-[10px] font-display tracking-[0.4em] uppercase text-muted-foreground">
+              COURSE MODULE
+            </span>
+          </div>
+
+          <NeonText gradient className="text-3xl sm:text-4xl mb-3">
             {course.title}
           </NeonText>
-          <p className="text-muted-foreground mb-4">{course.description}</p>
+          <p className="text-muted-foreground mb-6 leading-relaxed">{course.description}</p>
 
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>{completedLessons}/{totalLessons} lessons completed</span>
-            <div className="flex-1 max-w-xs h-1.5 bg-secondary rounded-full overflow-hidden">
+          <div className="glass rounded-2xl p-4 flex items-center gap-6">
+            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+              <span className="font-display text-foreground">{completedLessons}</span>
+              <span>/</span>
+              <span>{totalLessons} lessons</span>
+            </div>
+            <div className="flex-1 max-w-xs h-2 bg-secondary/60 rounded-full overflow-hidden">
               <motion.div
-                className="h-full gradient-neon rounded-full"
+                className="h-full gradient-neon rounded-full relative"
                 initial={{ width: 0 }}
                 animate={{ width: `${course.progress}%` }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-              />
+                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" 
+                     style={{ backgroundSize: '200% 100%' }} />
+              </motion.div>
             </div>
-            <span>{course.progress}%</span>
+            <span className="text-sm font-display text-primary">{course.progress}%</span>
           </div>
         </motion.div>
 
