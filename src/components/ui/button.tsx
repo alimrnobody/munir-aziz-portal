@@ -1,21 +1,22 @@
+/* eslint-disable react-refresh/only-export-components */
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-[0_0_20px_hsla(270,80%,55%,0.4)]",
+        default: "bg-[var(--button-purple)] text-white hover:bg-[var(--button-purple-hover)] rounded-lg",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-border bg-transparent text-foreground hover:bg-secondary hover:border-primary/50",
+        outline: "border border-border bg-transparent text-foreground hover:bg-secondary hover:border-[var(--button-purple)]",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-secondary hover:text-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        neon: "relative overflow-hidden bg-gradient-to-r from-neon-purple via-neon-pink to-neon-cyan text-primary-foreground font-semibold hover:shadow-[0_0_25px_hsla(270,100%,65%,0.5),0_0_50px_hsla(320,100%,60%,0.3)] hover:scale-105 active:scale-95",
-        "neon-outline": "relative border-0 bg-transparent text-foreground gradient-border hover:shadow-[0_0_20px_hsla(270,100%,65%,0.3)] hover:scale-105",
+        link: "text-[var(--button-purple)] underline-offset-4 hover:underline",
+        neon: "relative overflow-hidden bg-[var(--button-purple)] text-white font-semibold shadow-none hover:bg-[var(--button-purple-hover)]",
+        "neon-outline": "relative border border-border/80 bg-card text-foreground shadow-none hover:bg-secondary/70 hover:border-[var(--button-purple)]",
       },
       size: {
         default: "h-10 px-5 py-2",

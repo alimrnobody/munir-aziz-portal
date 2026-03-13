@@ -1,93 +1,147 @@
+import { useState } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { useTheme } from "@/components/ThemeProvider";
-import { Moon, Sun, LogOut, LayoutDashboard, Terminal, Activity } from "lucide-react";
+import { LayoutDashboard, Terminal, Activity, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
-import { mockUser } from "@/lib/mock-data";
 import { motion } from "framer-motion";
+import { MovingWatermark } from "@/components/MovingWatermark";
+import { useGlobalProtection } from "@/hooks/useGlobalProtection";
+import { useAuth } from "@/context/AuthContext";
 
 export const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const { theme, toggleTheme } = useTheme();
+  const { user, profile } = useAuth();
+  useGlobalProtection();
   const navigate = useNavigate();
   const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+  const [avatarFailed, setAvatarFailed] = useState(false);
+  const role = profile?.role === "owner" || profile?.role === "admin" ? profile.role : "user";
+  const userName = profile?.name || "";
+  const userEmail = user?.email || "";
+  const userAvatarUrl = profile?.avatar_url || "";
+  const googleAvatarUrl = typeof user?.user_metadata?.avatar_url === "string" ? user.user_metadata.avatar_url : "";
+  const avatarSeed = encodeURIComponent((userEmail || userName || "User").trim());
+  const initialsAvatarUrl = `https://ui-avatars.com/api/?name=${avatarSeed}&background=111827&color=ffffff&bold=true`;
+  const preferredAvatarUrl = userAvatarUrl || googleAvatarUrl || initialsAvatarUrl;
+  const avatarUrl = avatarFailed ? initialsAvatarUrl : preferredAvatarUrl;
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full">
+      <div className="flex min-h-screen w-full">
+        {role === "user" && userEmail && <MovingWatermark text={userEmail} />}
         <AppSidebar />
-        <div className="flex-1 flex flex-col min-w-0">
-          {/* Top bar */}
+        <div className="flex min-w-0 flex-1 flex-col">
           <motion.header
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="h-14 flex items-center justify-between px-4 lg:px-6 border-b border-border/20 glass-strong sticky top-0 z-50"
+            className="sticky top-0 z-50 flex h-14 items-center justify-between border-b border-border/60 bg-background/88 px-4 backdrop-blur-xl lg:px-6"
           >
             <div className="flex items-center gap-3">
-              <SidebarTrigger className="text-muted-foreground hover:text-foreground transition-colors" />
-              <div className="hidden sm:flex h-5 w-px bg-border/30" />
-              <div className="hidden sm:flex items-center gap-2">
+              <SidebarTrigger className="text-muted-foreground transition-colors hover:text-foreground" />
+              <div className="hidden h-5 w-px bg-border/40 sm:flex" />
+              <div className="hidden items-center gap-2 sm:flex">
                 <Activity size={12} className="text-primary" />
                 <span className="text-[10px] font-mono tracking-wider text-muted-foreground">
-                  {location.pathname === "/admin" ? "ADMIN PANEL" : "DASHBOARD"}
+                  {isAdminRoute ? "ADMIN PANEL" : "DASHBOARD"}
                 </span>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-2">
-              {location.pathname !== "/admin" && (
-                <Button variant="neon-outline" size="sm" onClick={() => navigate("/admin")} className="gap-1.5 hidden sm:flex">
+              {!isAdminRoute && (role === "admin" || role === "owner") && (
+                <Button
+                  variant="neon-outline"
+                  size="sm"
+                  onClick={() => navigate("/admin/courses")}
+                  className="hidden gap-1.5 sm:flex"
+                >
                   <LayoutDashboard size={13} />
                   <span className="text-xs">Admin</span>
                 </Button>
               )}
-              {location.pathname === "/admin" && (
-                <Button variant="neon-outline" size="sm" onClick={() => navigate("/dashboard")} className="gap-1.5 hidden sm:flex">
+              {isAdminRoute && (
+                <Button
+                  variant="neon-outline"
+                  size="sm"
+                  onClick={() => navigate("/dashboard")}
+                  className="hidden gap-1.5 sm:flex"
+                >
                   <Terminal size={13} />
                   <span className="text-xs">Dashboard</span>
                 </Button>
               )}
-              
-              <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/30 border border-border/20">
+
+              <div className="hidden items-center gap-2 rounded-full border border-border/60 bg-card/80 px-3 py-1.5 md:flex">
                 <motion.div
                   animate={{ opacity: [0.4, 1, 0.4] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="w-1.5 h-1.5 rounded-full bg-primary"
+                  className="h-1.5 w-1.5 rounded-full bg-primary"
                 />
-                <span className="text-xs text-muted-foreground font-mono">{mockUser.email}</span>
+                <div className="leading-tight">
+                  {userName ? (
+                    <>
+                      <p className="text-xs font-medium text-foreground">{userName}</p>
+                      <p className="text-[11px] text-muted-foreground">{userEmail}</p>
+                    </>
+                  ) : (
+                    <p className="font-mono text-xs text-muted-foreground">{userEmail}</p>
+                  )}
+                </div>
               </div>
-              
-              <Button
-                variant="ghost"
-                size="icon"
+
+              <button
+                type="button"
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
                 onClick={toggleTheme}
-                className="text-muted-foreground hover:text-foreground transition-colors relative overflow-hidden h-9 w-9"
+                className="relative hidden h-11 w-[84px] items-center rounded-full border border-primary/35 bg-[linear-gradient(90deg,#714AD6,#8A5AF0)] px-1 shadow-[0_10px_24px_rgba(113,74,214,0.18)] transition-all duration-300 sm:inline-flex"
               >
-                <motion.div
-                  key={theme}
-                  initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, type: "spring" }}
-                >
-                  {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
-                </motion.div>
-              </Button>
-              
-              <Button variant="ghost" size="icon" onClick={() => navigate("/")} className="text-muted-foreground hover:text-destructive transition-colors h-9 w-9">
-                <LogOut size={14} />
-              </Button>
+                <span className="relative z-10 flex w-full items-center justify-between px-2.5">
+                  <Moon
+                    size={18}
+                    strokeWidth={2.6}
+                    className={theme === "dark" ? "text-[#1F2937]" : "text-transparent"}
+                  />
+                  <Sun
+                    size={18}
+                    strokeWidth={2.6}
+                    className={theme === "light" ? "text-[#1F2937]" : "text-transparent"}
+                  />
+                </span>
+                <motion.span
+                  layout
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className={`absolute top-1 flex h-9 w-9 items-center justify-center rounded-full bg-[#ffffff] shadow-[0_10px_24px_rgba(15,23,42,0.22)] ${
+                    theme === "light" ? "left-1" : "left-[43px]"
+                  }`}
+                />
+              </button>
+
+              <button
+                aria-label="Open settings"
+                onClick={() => navigate("/settings")}
+                className="avatar-trigger inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-[#714AD6] px-0 py-0"
+              >
+                <img
+                  src={avatarUrl}
+                  alt="User avatar"
+                  className="h-full w-full rounded-full object-cover"
+                  referrerPolicy="no-referrer"
+                  onError={() => setAvatarFailed(true)}
+                />
+              </button>
             </div>
           </motion.header>
 
-          {/* Page content */}
-          <main className="flex-1 relative">
-            {/* Ambient background */}
-            <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-              <div className="absolute -top-40 right-1/4 w-[800px] h-[800px] bg-primary/4 rounded-full blur-[250px]" />
-              <div className="absolute bottom-0 -left-40 w-[600px] h-[600px] bg-neon-pink/3 rounded-full blur-[200px]" />
-              <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] bg-neon-blue/2 rounded-full blur-[200px]" />
-              <div className="absolute inset-0 hex-grid opacity-30" />
+          <main className="relative flex-1">
+            <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+              <div className="absolute -top-40 right-1/4 h-[800px] w-[800px] rounded-full bg-primary/2 blur-[260px]" />
+              <div className="absolute bottom-0 -left-40 h-[600px] w-[600px] rounded-full bg-primary/[0.015] blur-[220px]" />
+              <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] rounded-full bg-primary/[0.015] blur-[220px]" />
+              <div className="absolute inset-0 hex-grid opacity-[0.18]" />
             </div>
             {children}
           </main>

@@ -8,6 +8,34 @@ interface SecureVideoPlayerProps {
   watermarkSubtext?: string;
 }
 
+const getYouTubeEmbedUrl = (url: string) => {
+  if (!url) return null;
+
+  const lowerUrl = url.toLowerCase();
+  if (!lowerUrl.includes("youtube") && !lowerUrl.includes("youtu.be")) {
+    return null;
+  }
+
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.replace(/^www\./, "").toLowerCase();
+
+    let videoId = "";
+    if (host === "youtu.be") {
+      videoId = parsed.pathname.split("/").filter(Boolean)[0] || "";
+    } else if (parsed.pathname.includes("/embed/")) {
+      videoId = parsed.pathname.split("/embed/")[1]?.split("/")[0] || "";
+    } else {
+      videoId = parsed.searchParams.get("v") || "";
+    }
+
+    if (!videoId) return null;
+    return `https://www.youtube-nocookie.com/embed/${videoId}?modestbranding=1&rel=0&controls=1&disablekb=1&iv_load_policy=3`;
+  } catch {
+    return null;
+  }
+};
+
 export const SecureVideoPlayer = ({
   videoUrl,
   watermarkText,
@@ -15,6 +43,7 @@ export const SecureVideoPlayer = ({
 }: SecureVideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const youtubeEmbedUrl = videoUrl ? getYouTubeEmbedUrl(videoUrl) : null;
 
   useEffect(() => {
     const handler = (e: Event) => e.preventDefault();
@@ -52,13 +81,28 @@ export const SecureVideoPlayer = ({
 
   return (
     <div
-      className="relative w-full aspect-video rounded-2xl overflow-hidden glass neon-glow-strong select-none group"
+      className="video-container relative w-full aspect-video rounded-2xl overflow-hidden glass neon-glow-strong select-none group"
+      onContextMenuCapture={(e) => e.preventDefault()}
       onContextMenu={(e) => e.preventDefault()}
     >
       {/* Purple ambient glow behind */}
       <div className="absolute -inset-4 rounded-3xl gradient-neon opacity-10 blur-2xl pointer-events-none" />
 
       {videoUrl ? (
+        youtubeEmbedUrl ? (
+          <div className="relative z-[8] h-full w-full" onContextMenuCapture={(e) => e.preventDefault()}>
+            <iframe
+              src={youtubeEmbedUrl}
+              title="Lesson Video"
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              className="relative z-[8]"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        ) : (
         <video
           ref={videoRef}
           src={videoUrl}
@@ -67,9 +111,11 @@ export const SecureVideoPlayer = ({
           controlsList="nodownload noplaybackrate"
           disablePictureInPicture
           playsInline
+          onContextMenu={(e) => e.preventDefault()}
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
         />
+        )
       ) : (
         <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary/80 via-card to-secondary/60 relative z-10">
           <motion.div
@@ -96,9 +142,16 @@ export const SecureVideoPlayer = ({
         </div>
       )}
 
+      {youtubeEmbedUrl && (
+        <>
+          <div className="pointer-events-none youtube-top-blocker" />
+          <div className="pointer-events-none youtube-watch-blocker" />
+        </>
+      )}
+
       {/* Dynamic watermark */}
       <motion.div
-        className="absolute pointer-events-none select-none z-20"
+        className="watermark absolute pointer-events-none select-none"
         animate={{
           x: ["0%", "55%", "25%", "65%", "0%"],
           y: ["0%", "15%", "55%", "35%", "0%"],
