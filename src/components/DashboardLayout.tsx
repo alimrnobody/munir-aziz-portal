@@ -56,7 +56,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
                 <Button
                   variant="neon-outline"
                   size="sm"
-                  onClick={() => navigate("/admin/courses")}
+                  onClick={() => navigate("/admin/dashboard")}
                   className="hidden gap-1.5 sm:flex"
                 >
                   <LayoutDashboard size={13} />

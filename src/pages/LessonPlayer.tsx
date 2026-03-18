@@ -58,6 +58,9 @@ const LessonPlayer = () => {
   const { lessonId } = useParams();
   const navigate = useNavigate();
   const { user, profile, loading: authLoading } = useAuth();
+  const userId = user?.id ?? null;
+  const profileRole = profile?.role ?? null;
+  const hasProfile = Boolean(profile);
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -75,7 +78,7 @@ const LessonPlayer = () => {
         return;
       }
 
-      if (!user || !profile) {
+      if (!userId || !hasProfile) {
         setLoading(false);
         return;
       }
@@ -102,13 +105,13 @@ const LessonPlayer = () => {
       }
 
       const resolvedCourseId = String((lessonRow as LessonRow).course_id);
-      const isAdminOrOwner = profile.role === "owner" || profile.role === "admin";
+      const isAdminOrOwner = profileRole === "owner" || profileRole === "admin";
 
       if (!isAdminOrOwner) {
         const { data: teamMemberData, error: teamMemberError } = await supabase
           .from("team_members")
           .select("team_id")
-          .eq("user_id", user.id);
+          .eq("user_id", userId);
 
         if (teamMemberError) {
           setError(teamMemberError.message);
@@ -176,7 +179,7 @@ const LessonPlayer = () => {
       const { data: progressData, error: progressError } = await supabase
         .from("progress")
         .select("lesson_id, completed")
-        .eq("user_id", user.id);
+        .eq("user_id", userId);
 
       if (progressError) {
         setError(progressError.message);
@@ -217,7 +220,7 @@ const LessonPlayer = () => {
     };
 
     void loadCourse();
-  }, [authLoading, lessonId, navigate, profile, user]);
+  }, [authLoading, hasProfile, lessonId, navigate, profileRole, userId]);
 
   useEffect(() => {
     const loadLessonResources = async () => {
@@ -263,7 +266,7 @@ const LessonPlayer = () => {
     setActionError("");
     setMarkingComplete(true);
 
-    if (!user) {
+    if (!userId) {
       setActionError("Unable to verify user");
       setMarkingComplete(false);
       return;
@@ -274,7 +277,7 @@ const LessonPlayer = () => {
     const existing = await supabase
       .from("progress")
       .select("lesson_id, completed")
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .eq("lesson_id", lesson.id)
       .maybeSingle();
 
@@ -286,7 +289,7 @@ const LessonPlayer = () => {
 
     if (!existing.data) {
       const { error: insertError } = await supabase.from("progress").insert({
-        user_id: user.id,
+        user_id: userId,
         lesson_id: lesson.id,
         completed: true,
         completed_at: completedAt,
@@ -301,7 +304,7 @@ const LessonPlayer = () => {
       const { error: updateError } = await supabase
         .from("progress")
         .update({ completed: true, completed_at: completedAt })
-        .eq("user_id", user.id)
+        .eq("user_id", userId)
         .eq("lesson_id", lesson.id);
 
       if (updateError) {
@@ -381,7 +384,7 @@ const LessonPlayer = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-4 lg:p-6">
+      <div className="p-4 lg:px-6 lg:py-5 xl:px-8 2xl:px-10">
         <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
           <Button
             variant="ghost"
@@ -394,25 +397,25 @@ const LessonPlayer = () => {
           </Button>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start xl:gap-6 2xl:gap-7">
           <motion.div
-            className="flex-1 min-w-0"
+            className="min-w-0 flex-1"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-2 mb-4">
+            <div className="mb-3 flex items-center gap-2">
               <Monitor size={14} className="text-primary" />
               <span className="text-[10px] font-display tracking-[0.3em] uppercase text-muted-foreground">
                 NOW PLAYING
               </span>
             </div>
 
-            <NeonText as="h2" glow className="text-xl sm:text-2xl mb-5">
+            <NeonText as="h2" glow className="mb-4 text-xl sm:text-2xl">
               {lesson.order_index}. {lesson.title}
             </NeonText>
 
-            <div className="rounded-2xl overflow-hidden neon-glow relative">
+            <div className="relative overflow-hidden rounded-[26px] border border-border/20 bg-card shadow-[0_18px_48px_rgba(15,23,42,0.16)] ring-1 ring-white/5">
               {lesson.video_url?.trim() ? (
                 <ProtectedVideoPlayer
                   videoUrl={lesson.video_url}
@@ -482,43 +485,64 @@ const LessonPlayer = () => {
           </motion.div>
 
           <motion.div
-            className="w-full lg:w-80 xl:w-96 shrink-0"
+            className="w-full shrink-0 lg:w-[258px] xl:w-[282px] 2xl:w-[296px]"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="glass rounded-2xl overflow-hidden sticky top-20 border border-border/10">
-              <div className="p-4 border-b border-border/15 flex items-center gap-2">
-                <div className="w-1 h-4 rounded-full gradient-neon" />
-                <h3 className="text-[11px] font-display tracking-[0.25em] uppercase text-muted-foreground">
-                  Lessons
-                </h3>
+            <div className="sticky top-[4.75rem] rounded-[22px] border border-border/15 bg-card/80 p-3 shadow-[0_10px_32px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+              <div className="flex items-center justify-between gap-2 px-1 pb-3">
+                <div className="flex items-center gap-2">
+                  <div className="h-4 w-1.5 rounded-full bg-primary shadow-[0_0_0_1px_rgba(113,74,214,0.18)]" />
+                  <h3 className="text-[11px] font-display tracking-[0.25em] uppercase text-muted-foreground">
+                    Lessons
+                  </h3>
+                </div>
+                <span className="rounded-full border border-border/20 bg-background/60 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                  {course.lessons.length}
+                </span>
               </div>
-              <div className="max-h-[60vh] overflow-y-auto">
+              <div className="max-h-[calc(100vh-8.75rem)] space-y-2 overflow-y-auto pr-1">
                 {course.lessons.map((l) => {
                   const isActive = l.id === lessonId;
                   return (
                     <button
                       key={l.id}
                       onClick={() => !l.is_locked && navigate(`/course/${course.id}/lesson/${l.id}`)}
-                      className={`w-full flex items-center gap-3 px-4 py-3.5 text-left transition-all duration-300 text-sm border-b border-border/5 ${
+                      className={`w-full rounded-xl border px-3 py-2.5 text-left text-sm transition-all duration-200 ${
                         isActive
-                          ? "bg-primary/8 border-l-2 border-l-primary text-foreground"
-                          : "hover:bg-secondary/20 text-muted-foreground hover:text-foreground"
-                      } ${l.is_locked ? "opacity-60 cursor-not-allowed" : ""}`}
+                          ? "border-2 border-black/80 bg-background/55 text-foreground shadow-[0_10px_22px_rgba(0,0,0,0.14)] ring-1 ring-black/50 dark:border-white/90 dark:ring-white/45 dark:shadow-[0_10px_22px_rgba(255,255,255,0.12)]"
+                          : "border-border/10 bg-background/45 text-muted-foreground hover:border-border/25 hover:bg-secondary/18 hover:text-foreground"
+                      } ${l.is_locked ? "cursor-not-allowed opacity-60" : ""}`}
                     >
-                      {l.is_locked ? (
-                        <Lock size={14} className="text-muted-foreground shrink-0" />
-                      ) : l.completed ? (
-                        <CheckCircle size={14} className="text-primary shrink-0" />
-                      ) : isActive ? (
-                        <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }}>
-                          <PlayCircle size={14} className="text-primary shrink-0" />
-                        </motion.div>
-                      ) : (
-                        <PlayCircle size={14} className="shrink-0 opacity-30" />
-                      )}
-                      <span className="flex-1 truncate text-[13px]">{l.order_index}. {l.title}</span>
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border/15 bg-background/65 text-[11px] font-semibold text-foreground/80 shadow-sm">
+                          {l.order_index}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            {l.is_locked ? (
+                              <Lock size={13} className="shrink-0 text-muted-foreground" />
+                            ) : l.completed ? (
+                              <CheckCircle size={13} className="shrink-0 text-primary" />
+                            ) : isActive ? (
+                              <motion.div
+                                animate={{ scale: [1, 1.15, 1] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                                className="shrink-0"
+                              >
+                                <PlayCircle size={13} className="text-primary" />
+                              </motion.div>
+                            ) : (
+                              <PlayCircle size={13} className="shrink-0 opacity-30" />
+                            )}
+                            <span className="truncate text-[13px] font-medium leading-5">{l.title}</span>
+                          </div>
+                          <p className="mt-1 truncate pl-5 text-[11px] text-muted-foreground/80">
+                            {l.completed ? "Completed lesson" : isActive ? "Currently playing" : "Tap to open lesson"}
+                          </p>
+                        </div>
+                      </div>
                     </button>
                   );
                 })}

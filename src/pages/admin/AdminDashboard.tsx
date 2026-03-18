@@ -8,6 +8,7 @@ interface ProfileRow {
   id: string | number;
   name: string | null;
   email: string | null;
+  role?: string | null;
 }
 
 interface LessonRow {
@@ -24,7 +25,18 @@ interface ProgressRow {
   user_id: string | number;
   lesson_id: string | number;
   completed: boolean | null;
+  completed_at?: string | null;
   created_at?: string | null;
+}
+
+interface TeamMemberRow {
+  user_id: string | number;
+  team_id: string | number;
+}
+
+interface TeamCourseRow {
+  team_id: string | number;
+  course_id: string | number;
 }
 
 interface ActivityDay {
@@ -74,23 +86,28 @@ const AdminDashboard = () => {
       setError("");
       setActivityNotice("");
 
-      const [profilesResult, lessonsResult, coursesResult, progressResult] = await Promise.all([
-        supabase.from("profiles").select("id, name, email").order("name", { ascending: true }),
+      const [profilesResult, lessonsResult, coursesResult, teamMembersResult, teamCoursesResult, progressResult] =
+        await Promise.all([
+        supabase.from("profiles").select("id, name, email, role").order("name", { ascending: true }),
         supabase.from("lessons").select("id, course_id"),
         supabase.from("courses").select("id, title").order("title", { ascending: true }),
-        supabase.from("progress").select("user_id, lesson_id, completed, created_at"),
+        supabase.from("team_members").select("user_id, team_id"),
+        supabase.from("team_courses").select("team_id, course_id"),
+        supabase.from("progress").select("user_id, lesson_id, completed, completed_at, created_at"),
       ]);
 
-      const results = [profilesResult, lessonsResult, coursesResult, progressResult];
+      const results = [profilesResult, lessonsResult, coursesResult, teamMembersResult, teamCoursesResult, progressResult];
       const firstError = results.find((result) => result.error)?.error;
 
       if (firstError) {
-        if (/created_at/i.test(firstError.message)) {
-          setActivityNotice("Global heatmap needs progress.created_at in Supabase. Other analytics are still shown.");
+        if (/completed_at/i.test(firstError.message) || /created_at/i.test(firstError.message)) {
+          setActivityNotice(
+            "Global heatmap works best with progress.completed_at in Supabase. Other analytics are still shown."
+          );
 
           const fallbackProgressResult = await supabase
             .from("progress")
-            .select("user_id, lesson_id, completed");
+            .select("user_id, lesson_id, completed, created_at");
 
           if (fallbackProgressResult.error) {
             setError(fallbackProgressResult.error.message);
@@ -101,9 +118,11 @@ const AdminDashboard = () => {
           const profiles = (profilesResult.data || []) as ProfileRow[];
           const lessons = (lessonsResult.data || []) as LessonRow[];
           const courses = (coursesResult.data || []) as CourseRow[];
+          const teamMembers = (teamMembersResult.data || []) as TeamMemberRow[];
+          const teamCourses = (teamCoursesResult.data || []) as TeamCourseRow[];
           const progress = (fallbackProgressResult.data || []) as ProgressRow[];
 
-          applyAnalytics(profiles, lessons, courses, progress, false);
+          applyAnalytics(profiles, lessons, courses, teamMembers, teamCourses, progress, false);
           setLoading(false);
           return;
         }
@@ -116,9 +135,11 @@ const AdminDashboard = () => {
       const profiles = (profilesResult.data || []) as ProfileRow[];
       const lessons = (lessonsResult.data || []) as LessonRow[];
       const courses = (coursesResult.data || []) as CourseRow[];
+      const teamMembers = (teamMembersResult.data || []) as TeamMemberRow[];
+      const teamCourses = (teamCoursesResult.data || []) as TeamCourseRow[];
       const progress = (progressResult.data || []) as ProgressRow[];
 
-      applyAnalytics(profiles, lessons, courses, progress, true);
+      applyAnalytics(profiles, lessons, courses, teamMembers, teamCourses, progress, true);
       setLoading(false);
     };
 
@@ -126,40 +147,131 @@ const AdminDashboard = () => {
       profiles: ProfileRow[],
       lessons: LessonRow[],
       courses: CourseRow[],
+      teamMembers: TeamMemberRow[],
+      teamCourses: TeamCourseRow[],
       progress: ProgressRow[],
       canBuildHeatmap: boolean
     ) => {
       const totalUsers = profiles.length;
-      const totalLessons = lessons.length;
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setHours(0, 0, 0, 0);
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
 
+      const allCourseIds = new Set(courses.map((course) => String(course.id)));
+      const lessonsByCourse = new Map<string, LessonRow[]>();
+      const lessonsById = new Map<string, LessonRow>();
+      lessons.forEach((lesson) => {
+        lessonsById.set(String(lesson.id), lesson);
+        const key = String(lesson.course_id);
+        const current = lessonsByCourse.get(key) || [];
+        current.push(lesson);
+        lessonsByCourse.set(key, current);
+      });
+
+      const teamIdsByUser = new Map<string, Set<string>>();
+      teamMembers.forEach((membership) => {
+        const userId = String(membership.user_id);
+        const current = teamIdsByUser.get(userId) || new Set<string>();
+        current.add(String(membership.team_id));
+        teamIdsByUser.set(userId, current);
+      });
+
+      const courseIdsByTeam = new Map<string, Set<string>>();
+      teamCourses.forEach((assignment) => {
+        const teamId = String(assignment.team_id);
+        const current = courseIdsByTeam.get(teamId) || new Set<string>();
+        current.add(String(assignment.course_id));
+        courseIdsByTeam.set(teamId, current);
+      });
+
+      const accessibleCourseIdsByUser = new Map<string, Set<string>>();
+      profiles.forEach((profile) => {
+        const userId = String(profile.id);
+        const role = profile.role || "user";
+
+        if (role === "owner" || role === "admin") {
+          accessibleCourseIdsByUser.set(userId, new Set(allCourseIds));
+          return;
+        }
+
+        const teamIds = teamIdsByUser.get(userId) || new Set<string>();
+        const courseIds = new Set<string>();
+        teamIds.forEach((teamId) => {
+          const assignedCourses = courseIdsByTeam.get(teamId);
+          assignedCourses?.forEach((courseId) => courseIds.add(courseId));
+        });
+        accessibleCourseIdsByUser.set(userId, courseIds);
+      });
+
+      const accessibleLessonIdsByUser = new Map<string, Set<string>>();
+      accessibleCourseIdsByUser.forEach((courseIds, userId) => {
+        const lessonIds = new Set<string>();
+        courseIds.forEach((courseId) => {
+          const courseLessons = lessonsByCourse.get(courseId) || [];
+          courseLessons.forEach((lesson) => lessonIds.add(String(lesson.id)));
+        });
+        accessibleLessonIdsByUser.set(userId, lessonIds);
+      });
+
       const completedProgress = progress.filter((item) => Boolean(item.completed));
-      const lessonsCompleted = completedProgress.length;
+      const uniqueCompletedProgress = new Map<string, ProgressRow>();
+      completedProgress.forEach((item) => {
+        const key = `${String(item.user_id)}:${String(item.lesson_id)}`;
+        uniqueCompletedProgress.set(key, item);
+      });
+      const completedProgressRows = Array.from(uniqueCompletedProgress.values());
+      const lessonsCompleted = completedProgressRows.length;
       const userCompletedLessons = new Map<string, Set<string>>();
 
-      completedProgress.forEach((item) => {
+      completedProgressRows.forEach((item) => {
         const userKey = String(item.user_id);
         const current = userCompletedLessons.get(userKey) || new Set<string>();
         current.add(String(item.lesson_id));
         userCompletedLessons.set(userKey, current);
       });
 
+      const progressCourseIdsByUser = new Map<string, Set<string>>();
+      progress.forEach((item) => {
+        const lesson = lessonsById.get(String(item.lesson_id));
+        if (!lesson) return;
+
+        const userKey = String(item.user_id);
+        const current = progressCourseIdsByUser.get(userKey) || new Set<string>();
+        current.add(String(lesson.course_id));
+        progressCourseIdsByUser.set(userKey, current);
+      });
+
+      accessibleCourseIdsByUser.forEach((courseIds, userId) => {
+        if (courseIds.size > 0) return;
+
+        const fallbackCourseIds = progressCourseIdsByUser.get(userId);
+        if (!fallbackCourseIds || fallbackCourseIds.size === 0) return;
+
+        accessibleCourseIdsByUser.set(userId, new Set(fallbackCourseIds));
+      });
+
       const activeUsers = canBuildHeatmap
         ? new Set(
-            completedProgress
-              .filter((item) => item.created_at && new Date(item.created_at) >= sevenDaysAgo)
+            completedProgressRows
+              .filter((item) => {
+                const timestamp = item.completed_at || item.created_at;
+                return timestamp && new Date(timestamp) >= sevenDaysAgo;
+              })
               .map((item) => String(item.user_id))
           ).size
         : 0;
 
       const mappedUserActivity: UserActivity[] = profiles.map((profile) => {
-        const completedLessonsForUser = userCompletedLessons.get(String(profile.id))?.size || 0;
-        const progressPercentage = totalLessons > 0 ? Math.round((completedLessonsForUser / totalLessons) * 100) : 0;
+        const userId = String(profile.id);
+        const completedLessonsForUser = Array.from(userCompletedLessons.get(userId) || []).filter((lessonId) =>
+          accessibleLessonIdsByUser.get(userId)?.has(lessonId)
+        ).length;
+        const accessibleLessonCount = accessibleLessonIdsByUser.get(userId)?.size || 0;
+        const progressPercentage =
+          accessibleLessonCount > 0 ? Math.round((completedLessonsForUser / accessibleLessonCount) * 100) : 0;
 
         return {
-          id: String(profile.id),
+          id: userId,
           name: profile.name || "Unnamed",
           email: profile.email || "",
           completedLessons: completedLessonsForUser,
@@ -174,19 +286,19 @@ const AdminDashboard = () => {
             )
           : 0;
 
-      const lessonsByCourse = new Map<string, LessonRow[]>();
-      lessons.forEach((lesson) => {
-        const key = String(lesson.course_id);
-        const current = lessonsByCourse.get(key) || [];
-        current.push(lesson);
-        lessonsByCourse.set(key, current);
-      });
-
       const coursePerformanceData: CoursePerformance[] = courses.map((course) => {
-        const courseLessons = lessonsByCourse.get(String(course.id)) || [];
+        const courseId = String(course.id);
+        const courseLessons = lessonsByCourse.get(courseId) || [];
         const lessonIds = new Set(courseLessons.map((lesson) => String(lesson.id)));
-        const completedForCourse = completedProgress.filter((item) => lessonIds.has(String(item.lesson_id))).length;
-        const possibleCompletions = totalUsers * courseLessons.length;
+        const eligibleUsers = profiles.filter((profile) =>
+          accessibleCourseIdsByUser.get(String(profile.id))?.has(courseId)
+        ).length;
+        const completedForCourse = completedProgressRows.filter(
+          (item) =>
+            lessonIds.has(String(item.lesson_id)) &&
+            accessibleCourseIdsByUser.get(String(item.user_id))?.has(courseId)
+        ).length;
+        const possibleCompletions = eligibleUsers * courseLessons.length;
         const completionRate =
           possibleCompletions > 0 ? Math.round((completedForCourse / possibleCompletions) * 100) : 0;
 
@@ -206,10 +318,11 @@ const AdminDashboard = () => {
       const activityCountByDay = new Map<string, number>();
 
       if (canBuildHeatmap) {
-        completedProgress.forEach((item) => {
-          if (!item.created_at) return;
+        completedProgressRows.forEach((item) => {
+          const timestamp = item.completed_at || item.created_at;
+          if (!timestamp) return;
 
-          const completedDate = new Date(item.created_at);
+          const completedDate = new Date(timestamp);
           completedDate.setHours(0, 0, 0, 0);
           if (completedDate < startDate || completedDate > today) return;
 

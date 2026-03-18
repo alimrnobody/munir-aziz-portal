@@ -61,8 +61,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   const loadAuthState = useCallback(async (nextUser?: User | null) => {
-    setLoading(true);
-
     const authUser = typeof nextUser !== "undefined"
       ? nextUser
       : (await supabase.auth.getUser()).data.user ?? null;
@@ -153,10 +151,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!mounted) return;
-      void safeLoadAuthState(session?.user ?? null);
-    });
+    } = supabase.auth.onAuthStateChange((event, session) => {
+  if (!mounted) return;
+
+  if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
+    void safeLoadAuthState(session?.user ?? null);
+  }
+});
 
     window.addEventListener("profile-updated", handleProfileUpdated);
 
@@ -165,7 +166,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       subscription.unsubscribe();
       window.removeEventListener("profile-updated", handleProfileUpdated);
     };
-  }, [loadAuthState]);
+  }, []);
 
   const refreshProfile = useCallback(async () => {
     await loadAuthState();

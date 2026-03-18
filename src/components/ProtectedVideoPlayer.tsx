@@ -94,8 +94,30 @@ export const ProtectedVideoPlayer = ({
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const resumeKey = `lesson-resume-${lessonId}`;
   const [showControls, setShowControls] = useState(true);
   const [watermarkPosition, setWatermarkPosition] = useState<WatermarkPosition>(getRandomPosition);
+
+  useEffect(() => {
+  const video = videoRef.current;
+
+  if (!video) return;
+
+  const savedTime = localStorage.getItem(resumeKey);
+
+  if (savedTime) {
+    video.currentTime = Number(savedTime);
+  }
+}, [resumeKey]);
+
+  useEffect(() => {
+  return () => {
+    const video = videoRef.current;
+    if (video) {
+      localStorage.setItem(resumeKey, String(video.currentTime));
+    }
+  };
+}, []);
 
   useEffect(() => {
     return () => {
@@ -152,16 +174,26 @@ export const ProtectedVideoPlayer = ({
   };
 
   const handleTimeUpdate = () => {
-    const video = videoRef.current;
-    if (!video) return;
+  const video = videoRef.current;
+  if (!video) return;
 
-    setCurrentTime(video.currentTime);
-    setProgress(video.duration ? (video.currentTime / video.duration) * 100 : 0);
-  };
+  setCurrentTime(video.currentTime);
+  setProgress(video.duration ? (video.currentTime / video.duration) * 100 : 0);
+
+  localStorage.setItem(resumeKey, String(video.currentTime));
+};
 
   const handleLoadedMetadata = (event: React.SyntheticEvent<HTMLVideoElement>) => {
-    setDuration(event.currentTarget.duration || 0);
-  };
+  const video = event.currentTarget;
+
+  setDuration(video.duration || 0);
+
+  const savedTime = localStorage.getItem(`lesson-resume-${lessonId}`);
+
+  if (savedTime) {
+    video.currentTime = Number(savedTime);
+  }
+};
 
   const handleDurationChange = (event: React.SyntheticEvent<HTMLVideoElement>) => {
     if (event.currentTarget.duration) {
@@ -170,12 +202,15 @@ export const ProtectedVideoPlayer = ({
   };
 
   const handleEnded = () => {
-    setIsPlaying(false);
-    setShowControls(true);
-    if (!isCompleted) {
-      markComplete.mutate(lessonId);
-    }
-  };
+  setIsPlaying(false);
+  setShowControls(true);
+
+  localStorage.removeItem(resumeKey);
+
+  if (!isCompleted) {
+    markComplete.mutate(lessonId);
+  }
+};
 
   const handlePlayPause = async () => {
     const video = videoRef.current;
@@ -322,6 +357,7 @@ export const ProtectedVideoPlayer = ({
               showControls ? "opacity-100" : "opacity-0"
             )}
           >
+            <div>
             <div
               className="relative mb-4 h-2 cursor-pointer rounded-full bg-white/20"
               onClick={handleSeek}
@@ -336,7 +372,7 @@ export const ProtectedVideoPlayer = ({
               />
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 text-white">
+            <div className="flex flex-wrap items-center gap-2.5 text-white">
               <button
                 type="button"
                 onClick={() => void handlePlayPause()}
@@ -375,6 +411,7 @@ export const ProtectedVideoPlayer = ({
               >
                 {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
               </button>
+            </div>
             </div>
           </div>
         )}
