@@ -4,11 +4,13 @@ export const useGlobalProtection = () => {
   useEffect(() => {
     const handleContextMenu = (event: MouseEvent) => {
       event.preventDefault();
+      event.stopPropagation();
       return false;
     };
 
     const handleSelectStart = (event: Event) => {
       event.preventDefault();
+      event.stopPropagation();
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -24,14 +26,20 @@ export const useGlobalProtection = () => {
       }
     };
 
-    document.addEventListener("contextmenu", handleContextMenu);
-    document.addEventListener("selectstart", handleSelectStart);
-    document.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("contextmenu", handleContextMenu, true);
+    document.addEventListener("contextmenu", handleContextMenu, true);
+    window.addEventListener("selectstart", handleSelectStart, true);
+    document.addEventListener("selectstart", handleSelectStart, true);
+    window.addEventListener("keydown", handleKeyDown, true);
+    document.addEventListener("keydown", handleKeyDown, true);
 
     return () => {
-      document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("selectstart", handleSelectStart);
-      document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("contextmenu", handleContextMenu, true);
+      document.removeEventListener("contextmenu", handleContextMenu, true);
+      window.removeEventListener("selectstart", handleSelectStart, true);
+      document.removeEventListener("selectstart", handleSelectStart, true);
+      window.removeEventListener("keydown", handleKeyDown, true);
+      document.removeEventListener("keydown", handleKeyDown, true);
     };
   }, []);
 };

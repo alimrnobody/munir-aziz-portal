@@ -296,17 +296,16 @@ export const ProtectedVideoPlayer = ({
                 aria-hidden="true"
               />
               <div className="pointer-events-auto absolute left-0 top-0 z-20 h-[80px] w-full" />
-              <div className="youtube-watch-blocker pointer-events-auto absolute z-20" />
               <div
-                className="pointer-events-auto absolute bottom-0 left-0 z-20 h-[120px] w-full"
+                className="pointer-events-auto absolute bottom-0 left-0 z-20 h-[48px] w-full"
                 aria-hidden="true"
               />
               <div
-                className="pointer-events-auto absolute bottom-0 left-0 z-20 h-[90px] w-[220px]"
+                className="pointer-events-auto absolute bottom-0 right-0 z-20 h-[74px] w-[184px]"
                 aria-hidden="true"
               />
               <div
-                className="pointer-events-auto absolute bottom-0 left-1/2 z-20 h-20 w-[200px] -translate-x-1/2"
+                className="pointer-events-auto absolute bottom-0 right-0 z-20 h-[66px] w-[312px] rounded-tl-[28px]"
                 aria-hidden="true"
               />
             </div>
@@ -419,3 +418,17 @@ export const ProtectedVideoPlayer = ({
     </VideoProtectionWrapper>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
