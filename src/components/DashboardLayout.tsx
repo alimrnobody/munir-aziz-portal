@@ -38,7 +38,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="sticky top-0 z-50 flex h-14 items-center justify-between border-b border-border/60 bg-background/88 px-4 backdrop-blur-xl lg:px-6"
+            className="sticky top-0 z-50 flex h-14 items-center justify-between border-b border-border/60 bg-background/88 px-3 backdrop-blur-xl sm:px-4 lg:px-6"
           >
             <div className="flex items-center gap-3">
               <SidebarTrigger className="text-muted-foreground transition-colors hover:text-foreground" />
@@ -51,7 +51,27 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              {!isAdminRoute && (role === "admin" || role === "owner") && (
+                <Button
+                  variant="neon-outline"
+                  size="icon"
+                  onClick={() => navigate("/admin/dashboard")}
+                  className="inline-flex h-9 w-9 sm:hidden"
+                >
+                  <LayoutDashboard size={15} />
+                </Button>
+              )}
+              {isAdminRoute && (
+                <Button
+                  variant="neon-outline"
+                  size="icon"
+                  onClick={() => navigate("/dashboard")}
+                  className="inline-flex h-9 w-9 sm:hidden"
+                >
+                  <Terminal size={15} />
+                </Button>
+              )}
               {!isAdminRoute && (role === "admin" || role === "owner") && (
                 <Button
                   variant="neon-outline"
@@ -63,6 +83,15 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
                   <span className="text-xs">Admin</span>
                 </Button>
               )}
+
+              <button
+                type="button"
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+                onClick={toggleTheme}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-card/80 text-foreground shadow-sm sm:hidden"
+              >
+                {theme === "dark" ? <Moon size={16} /> : <Sun size={16} />}
+              </button>
               {isAdminRoute && (
                 <Button
                   variant="neon-outline"
@@ -123,7 +152,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
               <button
                 aria-label="Open settings"
                 onClick={() => navigate("/settings")}
-                className="avatar-trigger inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-[#714AD6] px-0 py-0"
+                className="avatar-trigger inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-[#714AD6] px-0 py-0"
               >
                 <img
                   src={avatarUrl}

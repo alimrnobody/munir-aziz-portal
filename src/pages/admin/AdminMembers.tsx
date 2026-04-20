@@ -295,8 +295,8 @@ const AdminMembers = () => {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-7xl p-6 lg:p-8">
-        <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+      <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
+        <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] sm:p-6">
           <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Members</h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-white/70">Manage users and assign them to teams.</p>
           <p className="mt-2 text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-white/70">
@@ -324,7 +324,7 @@ const AdminMembers = () => {
 
         {!loading && (
           <div className="space-y-6">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] sm:p-6">
               <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Add Member</h2>
               <form
                 autoComplete="off"
@@ -362,14 +362,14 @@ const AdminMembers = () => {
                 <button
                   type="submit"
                   disabled={addUserLoading}
-                  className="rounded-lg bg-slate-900 px-3 py-2 text-sm text-white hover:scale-105 active:scale-95 transition disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:scale-100 disabled:active:scale-100"
+                  className="w-full rounded-lg bg-slate-900 px-3 py-2 text-sm text-white transition hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:scale-100 disabled:active:scale-100 md:w-auto"
                 >
                   {addUserLoading ? "Adding..." : "Add User"}
                 </button>
               </form>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] sm:p-6">
               <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Member List</h2>
               <div className="mt-4 space-y-3">
                 {members.map((member) => (
@@ -378,7 +378,7 @@ const AdminMembers = () => {
                     className="grid gap-2 rounded-lg border border-slate-200 p-3 md:grid-cols-[1fr_1.3fr_auto_1.2fr_auto_auto] dark:border-white/10 dark:bg-[#0F172A]"
                   >
                     <p className="text-sm font-medium text-slate-900 dark:text-white">{member.name || "Unnamed"}</p>
-                    <p className="text-sm text-slate-600 dark:text-white/70">{member.email}</p>
+                    <p className="break-all text-sm text-slate-600 dark:text-white/70">{member.email}</p>
                     {canModifyRole(currentUserRole, member, currentUserId) ? (
                       <select
                         value={member.role}
@@ -425,20 +425,20 @@ const AdminMembers = () => {
                         </div>
                         <button
                           onClick={() => void assignTeam(member.id)}
-                          className="rounded-lg border border-slate-300 bg-transparent px-3 py-1 text-sm font-medium text-slate-700 dark:border-white/10 dark:bg-[#111827] dark:text-white/80"
+                          className="w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 text-sm font-medium text-slate-700 dark:border-white/10 dark:bg-[#111827] dark:text-white/80 md:w-auto"
                         >
                           Assign Team
                         </button>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col gap-2 sm:flex-row">
                           <button
                             onClick={() => void suspendMember(member.id)}
-                            className="rounded-lg border border-amber-300 bg-transparent px-3 py-1 text-sm font-medium text-amber-700 dark:border-white/10 dark:bg-[#111827] dark:text-white/80"
+                            className="w-full rounded-lg border border-amber-300 bg-transparent px-3 py-2 text-sm font-medium text-amber-700 dark:border-white/10 dark:bg-[#111827] dark:text-white/80 sm:w-auto"
                           >
                             Suspend
                           </button>
                           <button
                             onClick={() => void deleteMember(member.id)}
-                            className="rounded-lg border border-rose-300 bg-transparent px-3 py-1 text-sm font-medium text-rose-700 dark:border-white/10 dark:bg-[#111827] dark:text-white/80"
+                            className="w-full rounded-lg border border-rose-300 bg-transparent px-3 py-2 text-sm font-medium text-rose-700 dark:border-white/10 dark:bg-[#111827] dark:text-white/80 sm:w-auto"
                           >
                             Delete
                           </button>

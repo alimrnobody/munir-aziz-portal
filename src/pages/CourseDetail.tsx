@@ -239,13 +239,13 @@ const CourseDetail = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-6 lg:p-10 max-w-3xl mx-auto">
+      <div className="mx-auto max-w-3xl p-4 sm:p-6 lg:p-10">
         <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate("/courses")}
-            className="mb-8 text-muted-foreground hover:text-foreground gap-2 group"
+            className="mb-6 gap-2 text-muted-foreground hover:text-foreground group sm:mb-8"
           >
             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
             Back to courses
@@ -258,7 +258,7 @@ const CourseDetail = () => {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="mb-10"
         >
-          <div className="flex items-center gap-2 mb-4">
+          <div className="mb-4 flex items-center gap-2">
             <Target size={14} className="text-primary" />
             <span className="text-[10px] font-display tracking-[0.4em] uppercase text-muted-foreground">
               COURSE MODULE
@@ -268,9 +268,9 @@ const CourseDetail = () => {
           <h1 className="mb-4 text-3xl font-semibold text-gray-900 dark:text-white sm:text-4xl">
             {course.title}
           </h1>
-          <p className="text-muted-foreground mb-8 leading-relaxed">{course.description}</p>
+          <p className="mb-6 leading-relaxed text-muted-foreground sm:mb-8">{course.description}</p>
 
-          <div className="glass glass-hover rounded-2xl p-6 flex items-center gap-6">
+          <div className="glass glass-hover flex flex-col items-start gap-4 rounded-2xl p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
             <ProgressRing progress={course.progress} size={64} strokeWidth={4} />
             <div className="space-y-1.5">
               <div className="text-sm text-muted-foreground">
@@ -282,7 +282,7 @@ const CourseDetail = () => {
                 <BookOpen size={12} className="text-primary/60" />
                 <span>{totalLessons} total lessons</span>
               </div>
-              <div className="w-40 h-1.5 bg-secondary/40 rounded-full overflow-hidden mt-1">
+              <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-secondary/40 sm:w-40">
                 <motion.div
                   className="h-full rounded-full bg-[#714AD6]"
                   initial={{ width: 0 }}
@@ -294,7 +294,7 @@ const CourseDetail = () => {
           </div>
         </motion.div>
 
-        <div className="flex items-center gap-3 mb-6">
+        <div className="mb-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-gradient-to-r from-border/50 to-transparent" />
           <span className="text-[10px] font-display tracking-[0.3em] uppercase text-muted-foreground">
             Lessons
@@ -309,7 +309,7 @@ const CourseDetail = () => {
               key={lesson.id}
               onClick={() => navigate(`/course/${course.id}/lesson/${lesson.id}`)}
               disabled={lesson.is_locked}
-              className={`w-full rounded-xl px-4 py-3 text-left text-white transition ${
+              className={`w-full rounded-xl px-3 py-3 text-left text-white transition sm:px-4 ${
                 lesson.is_locked
                   ? "bg-[#714AD6]/70 cursor-not-allowed"
                   : "bg-[#714AD6] hover:bg-[#5f3dc4]"

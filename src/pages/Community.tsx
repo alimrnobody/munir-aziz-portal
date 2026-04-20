@@ -170,21 +170,21 @@ const Community = () => {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto flex h-[calc(100vh-3.5rem)] max-w-7xl flex-col p-3 lg:p-4">
+      <div className="mx-auto flex h-[calc(100dvh-3.5rem)] max-w-7xl flex-col p-2 sm:p-3 lg:p-4">
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-[24px] border border-border/70 bg-card shadow-sm">
-          <div className="flex h-12 items-center justify-between border-b border-border/60 bg-card px-5">
+          <div className="flex h-12 items-center justify-between border-b border-border/60 bg-card px-3 sm:px-5">
             <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
               <MessageSquare size={16} className="text-primary" />
               <span>Community Discussion</span>
             </div>
-            <div className="text-xs text-muted-foreground">{messages.length} messages</div>
+            <div className="hidden text-xs text-muted-foreground sm:block">{messages.length} messages</div>
           </div>
 
           <div className="relative min-h-0 flex-1 bg-background">
             <div className="absolute inset-0 opacity-[0.04] [background-image:radial-gradient(circle,_currentColor_1px,_transparent_1px)] [background-size:22px_22px] text-foreground" />
 
             <div className="relative flex h-full min-h-0 flex-col">
-              <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-5">
+              <div className="min-h-0 flex-1 overflow-y-auto px-2 py-3 sm:px-5 sm:py-4">
                 {loading && (
                   <div className="flex h-full min-h-[320px] items-center justify-center text-sm text-muted-foreground">
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -226,7 +226,7 @@ const Community = () => {
                           )}
 
                           <div
-                            className={`max-w-[min(84%,42rem)] rounded-2xl border px-4 py-3 shadow-sm ${
+                            className={`max-w-[88%] rounded-2xl border px-3.5 py-3 shadow-sm sm:max-w-[min(84%,42rem)] sm:px-4 ${
                               isCurrentUser
                                 ? "rounded-br-md border-primary bg-primary text-primary-foreground"
                                 : "rounded-bl-md border-border/60 bg-muted text-foreground"
@@ -261,9 +261,9 @@ const Community = () => {
                 )}
               </div>
 
-              <div className="border-t border-border/60 bg-card px-3 py-3 sm:px-5">
-                <form className="mx-auto flex max-w-5xl items-center gap-3" onSubmit={(event) => void handleSubmit(event)}>
-                  <div className="flex h-12 flex-1 items-center rounded-full border border-border bg-card px-4 shadow-sm">
+              <div className="border-t border-border/60 bg-card px-2 py-2.5 sm:px-5 sm:py-3">
+                <form className="mx-auto flex max-w-5xl items-end gap-2.5 sm:items-center sm:gap-3" onSubmit={(event) => void handleSubmit(event)}>
+                  <div className="flex h-11 flex-1 items-center rounded-full border border-border bg-card px-3.5 shadow-sm sm:h-12 sm:px-4">
                     <textarea
                       value={messageInput}
                       onChange={(event) => setMessageInput(event.target.value)}
@@ -271,14 +271,14 @@ const Community = () => {
                       placeholder="Write a message..."
                       rows={1}
                       maxLength={2000}
-                      className="max-h-28 min-h-[22px] w-full resize-none bg-transparent text-sm leading-6 text-foreground outline-none placeholder:text-muted-foreground"
+                      className="max-h-28 min-h-[22px] w-full resize-none bg-transparent text-[15px] leading-6 text-foreground outline-none placeholder:text-muted-foreground sm:text-sm"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={sending || !messageInput.trim()}
-                    className="inline-flex h-12 w-12 items-center justify-center rounded-full p-0 text-white disabled:opacity-50"
+                    className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full p-0 text-white disabled:opacity-50 sm:h-12 sm:w-12"
                     aria-label="Send message"
                   >
                     {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <SendHorizonal size={17} />}

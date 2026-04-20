@@ -477,8 +477,8 @@ const AdminCourses = () => {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-7xl p-6 lg:p-8">
-        <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+      <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
+        <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] sm:p-6">
           <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Courses</h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-white/70">
             Create and manage courses, thumbnails, and direct lessons.
@@ -505,7 +505,7 @@ const AdminCourses = () => {
 
         {!loading && (
           <div className="space-y-6">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] sm:p-6">
               <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Create Course</h2>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
                 <input
@@ -523,7 +523,7 @@ const AdminCourses = () => {
               </div>
               <button
                 onClick={() => void createCourse()}
-                className="mt-4 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+                className="mt-4 w-full rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white sm:w-auto"
               >
                 Create Course
               </button>
@@ -532,7 +532,7 @@ const AdminCourses = () => {
             {courses.map((course) => (
               <div
                 key={course.id}
-                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]"
+                className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:bg-[#0F172A] dark:border-white/10 dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] sm:p-6"
               >
                 <div className="grid gap-3 md:grid-cols-2">
                   <input
@@ -569,7 +569,7 @@ const AdminCourses = () => {
                     placeholder="Thumbnail URL"
                     className="rounded-lg border border-slate-300 px-3 py-2 text-sm dark:bg-[#111827] dark:text-white dark:border-white/10 placeholder:dark:text-white/40"
                   />
-                  <label className="inline-flex cursor-pointer items-center rounded-lg border border-slate-300 px-4 py-2 text-sm text-slate-700 dark:text-white/80 dark:border-white/10 dark:bg-[#111827]">
+                  <label className="inline-flex w-full cursor-pointer items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm text-slate-700 dark:text-white/80 dark:border-white/10 dark:bg-[#111827] md:w-auto">
                     Upload Thumbnail
                     <input
                       type="file"
@@ -578,16 +578,16 @@ const AdminCourses = () => {
                       onChange={(e) => void uploadCourseThumbnail(course.id, e.target.files?.[0] || null)}
                     />
                   </label>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col gap-2 sm:flex-row">
                     <button
                       onClick={() => void saveCourse(course.id)}
-                      className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 dark:text-white/80 dark:border-white/10 dark:bg-[#111827]"
+                      className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 dark:text-white/80 dark:border-white/10 dark:bg-[#111827] sm:w-auto"
                     >
                       Edit Course
                     </button>
                     <button
                       onClick={() => void deleteCourse(course.id)}
-                      className="rounded-lg bg-rose-600 px-3 py-2 text-sm font-medium text-white"
+                      className="w-full rounded-lg bg-rose-600 px-3 py-2 text-sm font-medium text-white sm:w-auto"
                     >
                       Delete
                     </button>

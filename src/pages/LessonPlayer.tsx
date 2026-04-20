@@ -384,16 +384,16 @@ const LessonPlayer = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-4 lg:px-6 lg:py-5 xl:px-8 2xl:px-10">
+      <div className="p-3 sm:p-4 lg:px-6 lg:py-5 xl:px-8 2xl:px-10">
         <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate(`/course/${course.id}`)}
-            className="mb-4 text-muted-foreground hover:text-foreground gap-2 group"
+            className="mb-4 gap-2 text-muted-foreground hover:text-foreground group"
           >
             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-            Back to {course.title}
+            <span className="truncate">Back to {course.title}</span>
           </Button>
         </motion.div>
 
@@ -411,7 +411,7 @@ const LessonPlayer = () => {
               </span>
             </div>
 
-            <NeonText as="h2" glow className="mb-4 text-xl sm:text-2xl">
+            <NeonText as="h2" glow className="mb-4 text-lg sm:text-xl lg:text-2xl">
               {lesson.order_index}. {lesson.title}
             </NeonText>
 
@@ -431,7 +431,7 @@ const LessonPlayer = () => {
             </div>
 
             {resources.length > 0 && (
-              <div className="mt-4 rounded-2xl border border-border/20 bg-card p-5">
+              <div className="mt-4 rounded-2xl border border-border/20 bg-card p-4 sm:p-5">
                 <h3 className="text-sm font-semibold text-foreground">Resources</h3>
                 <div className="mt-3 space-y-2">
                   {resources.map((resource) => {
@@ -457,7 +457,7 @@ const LessonPlayer = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="mt-4 glass glass-hover rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+              className="mt-4 glass glass-hover flex flex-col items-start justify-between gap-3 rounded-2xl p-4 sm:flex-row sm:items-center sm:p-5"
             >
               <div className="flex items-center gap-5">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -473,7 +473,7 @@ const LessonPlayer = () => {
               <Button
                 variant="neon"
                 size="sm"
-                className="gap-2"
+                className="w-full gap-2 sm:w-auto"
                 onClick={() => void handleMarkComplete()}
                 disabled={markingComplete || lesson.completed}
               >
@@ -490,7 +490,7 @@ const LessonPlayer = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="sticky top-[4.75rem] rounded-[22px] border border-border/15 bg-card/80 p-3 shadow-[0_10px_32px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+            <div className="rounded-[22px] border border-border/15 bg-card/80 p-2.5 shadow-[0_10px_32px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-3 lg:sticky lg:top-[4.75rem]">
               <div className="flex items-center justify-between gap-2 px-1 pb-3">
                 <div className="flex items-center gap-2">
                   <div className="h-4 w-1.5 rounded-full bg-primary shadow-[0_0_0_1px_rgba(113,74,214,0.18)]" />
@@ -502,7 +502,7 @@ const LessonPlayer = () => {
                   {course.lessons.length}
                 </span>
               </div>
-              <div className="max-h-[calc(100vh-8.75rem)] space-y-2 overflow-y-auto pr-1">
+              <div className="space-y-2 lg:max-h-[calc(100vh-8.75rem)] lg:overflow-y-auto lg:pr-1">
                 {course.lessons.map((l) => {
                   const isActive = l.id === lessonId;
                   return (

@@ -405,9 +405,9 @@ const AdminDashboard = () => {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-7xl p-6 lg:p-10">
-        <div className="mb-8 rounded-2xl border border-slate-200/90 bg-white p-7 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.28)]">
-          <h1 className="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">Admin Dashboard</h1>
+      <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-10">
+        <div className="mb-8 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.28)] sm:p-7">
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-3xl">Admin Dashboard</h1>
           <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-white/68">
             Platform analytics, learning activity, and course performance.
           </p>
@@ -437,7 +437,7 @@ const AdminDashboard = () => {
               {statCards.map((card) => (
                 <div
                   key={card.label}
-                  className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.28)]"
+                  className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.28)] sm:p-6"
                 >
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium text-slate-600 dark:text-white/68">{card.label}</p>
@@ -445,20 +445,20 @@ const AdminDashboard = () => {
                       <card.icon size={17} />
                     </div>
                   </div>
-                  <p className="mt-6 text-4xl font-semibold tracking-tight text-slate-950 dark:text-white">{card.value}</p>
+                  <p className="mt-5 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white sm:mt-6 sm:text-4xl">{card.value}</p>
                 </div>
               ))}
             </div>
 
-            <section className="rounded-2xl border border-slate-200/90 bg-white p-7 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.28)]">
-              <div className="mb-6 flex items-center justify-between gap-4">
+            <section className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.28)] sm:p-7">
+              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h2 className="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">Global Activity</h2>
+                  <h2 className="text-xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-2xl">Global Activity</h2>
                   <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-white/68">
                     Lesson completion activity across the last 12 months.
                   </p>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-white/60">
+                <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-slate-500 dark:text-white/60">
                   <span>Less</span>
                   <span className="h-3 w-3 rounded-[4px] bg-slate-200 dark:bg-white/[0.08]" />
                   <span className="h-3 w-3 rounded-[4px] bg-emerald-200 dark:bg-emerald-600" />
@@ -469,8 +469,8 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              <div className="overflow-hidden">
-                <div className="w-full">
+              <div className="overflow-x-auto pb-2">
+                <div className="min-w-[760px]">
                   <div className="mb-4 ml-12 grid grid-flow-col gap-1 text-sm font-medium text-slate-500 dark:text-white/60">
                     {monthMarkers.map((label, index) => (
                       <div key={`${label || "blank"}-${index}`} className="w-4">
@@ -513,10 +513,10 @@ const AdminDashboard = () => {
             </section>
 
             <div className="grid gap-6 xl:grid-cols-[1.4fr_0.8fr]">
-              <section className="rounded-2xl border border-slate-200/90 bg-white p-7 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.28)]">
+              <section className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.28)] sm:p-7">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <h2 className="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">User Activity</h2>
+                    <h2 className="text-xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-2xl">User Activity</h2>
                     <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-white/68">
                       Completion and progress for each user.
                     </p>
@@ -550,8 +550,8 @@ const AdminDashboard = () => {
                 </div>
               </section>
 
-              <section className="rounded-2xl border border-slate-200/90 bg-white p-7 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.28)]">
-                <h2 className="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">Top Learners</h2>
+              <section className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.28)] sm:p-7">
+                <h2 className="text-xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-2xl">Top Learners</h2>
                 <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-white/68">
                   Highest progress users across the platform.
                 </p>

@@ -305,24 +305,24 @@ const Dashboard = () => {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-7xl p-6 lg:p-10">
+      <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-12"
+          className="mb-8 sm:mb-12"
         >
           <p className="mb-4 text-xs font-display uppercase tracking-[0.4em] text-muted-foreground">
             WELCOME TO ELITE SQUAD
           </p>
           <h1
-            className="mb-4 text-[56px] font-extrabold leading-[1.1]"
+            className="mb-4 text-4xl font-extrabold leading-[1.1] sm:text-5xl lg:text-[56px]"
             style={{ fontFamily: "'Sora', sans-serif" }}
           >
             <span className="text-black dark:text-white">Become Elite With</span>
             <span className="block text-[#714AD6]">Mr Nobody</span>
           </h1>
-          <p className="max-w-[600px] text-base leading-relaxed text-black/60 dark:text-white/70">
+          <p className="max-w-[600px] text-sm leading-relaxed text-black/60 dark:text-white/70 sm:text-base">
             Learn real digital skills, track your progress, and unlock elite opportunities inside the private training system.
           </p>
         </motion.div>
@@ -331,16 +331,16 @@ const Dashboard = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.12, duration: 0.5 }}
-          className="mb-12 rounded-[20px] border border-border/60 bg-card p-7 shadow-sm"
+          className="mb-10 rounded-[20px] border border-border/60 bg-card p-4 shadow-sm sm:mb-12 sm:p-7"
         >
-          <div className="mb-6 flex items-center justify-between gap-4">
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-2xl font-semibold tracking-tight text-foreground">Activity</h2>
+              <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">Activity</h2>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 Your lesson completion streak across the last 12 months.
               </p>
             </div>
-            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-muted-foreground">
               <span>Less</span>
               <span className="h-3 w-3 rounded-[4px] bg-slate-200 dark:bg-white/[0.08]" />
               <span className="h-3 w-3 rounded-[4px] bg-emerald-200 dark:bg-emerald-600" />
@@ -351,8 +351,8 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="overflow-hidden">
-            <div className="w-full">
+          <div className="overflow-x-auto pb-2">
+            <div className="min-w-[720px]">
               <div className="mb-4 ml-12 grid grid-flow-col gap-1 text-sm font-medium text-muted-foreground">
                 {monthMarkers.map((label, index) => (
                   <div key={`${label || "blank"}-${index}`} className="w-4">
@@ -394,7 +394,7 @@ const Dashboard = () => {
           </div>
         </motion.section>
 
-        <div className="mb-12 grid grid-cols-2 gap-5 lg:grid-cols-4">
+        <div className="mb-10 grid grid-cols-1 gap-4 sm:mb-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
           {statItems.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -402,13 +402,13 @@ const Dashboard = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 0.15 + i * 0.08, duration: 0.5 }}
             >
-              <div className="cursor-default rounded-[14px] border border-slate-200/90 bg-white p-6 text-gray-900 shadow-sm transition-all duration-200 ease-in-out hover:border-[#714AD6] dark:border-white/10 dark:bg-[#0b1220] dark:text-white">
+              <div className="cursor-default rounded-[14px] border border-slate-200/90 bg-white p-5 text-gray-900 shadow-sm transition-all duration-200 ease-in-out hover:border-[#714AD6] dark:border-white/10 dark:bg-[#0b1220] dark:text-white sm:p-6">
                 <div className="mb-3 flex items-center justify-between">
                   <div className="rounded-[10px] bg-[rgba(113,74,214,0.15)] p-[10px] text-gray-700 dark:text-purple-400">
                     <stat.icon size={18} />
                   </div>
                 </div>
-                <div className="mb-1 text-[32px] font-semibold tracking-tight text-gray-950 dark:text-white">{stat.value}</div>
+                <div className="mb-1 text-[28px] font-semibold tracking-tight text-gray-950 dark:text-white sm:text-[32px]">{stat.value}</div>
                 <div className="text-xs uppercase tracking-[0.1em] text-gray-500 dark:text-white/50">{stat.label}</div>
               </div>
             </motion.div>

@@ -131,7 +131,7 @@ const AdminTeamDetail = () => {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-7xl p-6 lg:p-8">
+      <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
         <button
           onClick={() => navigate("/admin/teams")}
           className="mb-4 flex items-center gap-1 text-sm text-gray-400 hover:text-white hover:underline"
@@ -140,7 +140,7 @@ const AdminTeamDetail = () => {
           <span>Back to Teams</span>
         </button>
 
-        <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+        <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] sm:p-6">
           <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">{teamName || "Team Details"}</h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-white/70">
             Review members in this team and remove them when needed.
@@ -159,7 +159,7 @@ const AdminTeamDetail = () => {
           </div>
         )}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0F172A] dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] sm:p-6">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Team Members</h2>
 
           {loading ? (
@@ -177,7 +177,7 @@ const AdminTeamDetail = () => {
                   </div>
                   <button
                     onClick={() => void removeMember(member.id)}
-                    className="rounded-lg bg-rose-600 px-3 py-2 text-sm font-medium text-white"
+                    className="w-full rounded-lg bg-rose-600 px-3 py-2 text-sm font-medium text-white sm:w-auto"
                   >
                     Remove
                   </button>

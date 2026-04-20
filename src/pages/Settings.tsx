@@ -197,7 +197,7 @@ const Settings = () => {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-5xl p-6 lg:p-10">
+      <div className="mx-auto max-w-5xl p-4 sm:p-6 lg:p-10">
         <h1 className="text-2xl font-semibold text-foreground">Settings</h1>
         <p className="mt-2 text-sm text-muted-foreground">Manage your account, appearance, and session security.</p>
 
@@ -207,9 +207,9 @@ const Settings = () => {
 
         {!loading && (
           <div className="mt-6 space-y-6">
-            <section className="rounded-2xl border border-border/30 bg-card p-6 shadow-sm">
+            <section className="rounded-2xl border border-border/30 bg-card p-4 shadow-sm sm:p-6">
               <h2 className="text-lg font-semibold text-foreground">Profile</h2>
-              <div className="mt-4 flex items-center gap-4">
+              <div className="mt-4 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
                 <img
                   src={avatarUrl || fallbackAvatarUrl}
                   alt="Profile avatar"
@@ -220,8 +220,8 @@ const Settings = () => {
                   <p className="text-xs text-muted-foreground">{email}</p>
                 </div>
               </div>
-              <div className="mt-4 flex flex-wrap gap-3">
-                <label className="inline-flex cursor-pointer items-center rounded-lg border border-border/40 px-4 py-2 text-sm text-foreground">
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <label className="inline-flex w-full cursor-pointer items-center justify-center rounded-lg border border-border/40 px-4 py-2 text-sm text-foreground sm:w-auto">
                   {uploadingAvatar ? "Uploading..." : "Upload Profile Picture"}
                   <input
                     type="file"
@@ -234,14 +234,14 @@ const Settings = () => {
                 <button
                   onClick={() => void handleRemoveAvatar()}
                   disabled={removingAvatar || !avatarUrl}
-                  className="rounded-lg px-4 py-2 text-sm text-white disabled:opacity-50"
+                  className="w-full rounded-lg px-4 py-2 text-sm text-white disabled:opacity-50 sm:w-auto"
                 >
                   {removingAvatar ? "Removing..." : "Remove Avatar"}
                 </button>
               </div>
             </section>
 
-            <section className="rounded-2xl border border-border/30 bg-card p-6 shadow-sm">
+            <section className="rounded-2xl border border-border/30 bg-card p-4 shadow-sm sm:p-6">
               <h2 className="text-lg font-semibold text-foreground">Account</h2>
               <div className="mt-4 grid gap-4 md:grid-cols-2">
                 <div>
@@ -292,28 +292,28 @@ const Settings = () => {
               <button
                 onClick={() => void handlePasswordChange()}
                 disabled={savingPassword}
-                className="mt-4 rounded-lg px-4 py-2 text-sm text-white"
+                className="mt-4 w-full rounded-lg px-4 py-2 text-sm text-white sm:w-auto"
               >
                 {savingPassword ? "Updating..." : "Change Password"}
               </button>
             </section>
 
-            <section className="rounded-2xl border border-border/30 bg-card p-6 shadow-sm">
+            <section className="rounded-2xl border border-border/30 bg-card p-4 shadow-sm sm:p-6">
               <h2 className="text-lg font-semibold text-foreground">Appearance</h2>
-              <div className="mt-4 flex items-center justify-between gap-4">
+              <div className="mt-4 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm text-foreground">Theme</p>
                   <p className="text-xs text-muted-foreground">Current mode: {theme}</p>
                 </div>
-                <button onClick={toggleTheme} className="rounded-lg px-4 py-2 text-sm text-white">
+                <button onClick={toggleTheme} className="w-full rounded-lg px-4 py-2 text-sm text-white sm:w-auto">
                   Switch to {theme === "dark" ? "Light" : "Dark"} Mode
                 </button>
               </div>
             </section>
 
-            <section className="rounded-2xl border border-border/30 bg-card p-6 shadow-sm">
+            <section className="rounded-2xl border border-border/30 bg-card p-4 shadow-sm sm:p-6">
               <h2 className="text-lg font-semibold text-foreground">Security</h2>
-              <div className="mt-4 flex items-center justify-between gap-4">
+              <div className="mt-4 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm text-foreground">Login Provider</p>
                   <p className="text-xs uppercase tracking-wide text-muted-foreground">{provider}</p>
@@ -321,7 +321,7 @@ const Settings = () => {
                 <button
                   onClick={() => void handleLogoutAllSessions()}
                   disabled={loggingOutAll}
-                  className="rounded-lg px-4 py-2 text-sm text-white"
+                  className="w-full rounded-lg px-4 py-2 text-sm text-white sm:w-auto"
                 >
                   {loggingOutAll ? "Signing out..." : "Logout All Sessions"}
                 </button>
