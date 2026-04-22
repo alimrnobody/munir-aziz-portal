@@ -88,7 +88,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
                 type="button"
                 aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
                 onClick={toggleTheme}
-                className={`mobile-theme-toggle inline-flex h-9 w-9 items-center justify-center rounded-2xl border shadow-sm transition-colors sm:hidden ${
+                className={`mobile-theme-toggle ${theme === "dark" ? "mobile-theme-toggle-dark" : "mobile-theme-toggle-light"} inline-flex h-9 w-9 items-center justify-center rounded-2xl border shadow-sm transition-colors sm:hidden ${
                   theme === "dark"
                     ? "border-white/10 bg-[#1f1f23] text-white"
                     : "border-slate-300 bg-white text-slate-900"
@@ -183,6 +183,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
     </SidebarProvider>
   );
 };
+
 
 
 

@@ -182,16 +182,31 @@
   }
 
   .mobile-theme-toggle {
-    background: transparent !important;
     padding: 0 !important;
   }
 
-  .mobile-theme-toggle:hover {
-    background: transparent !important;
+  .mobile-theme-toggle-light {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
   }
 
-  .mobile-theme-toggle:active {
-    background: transparent !important;
+  .mobile-theme-toggle-light:hover,
+  .mobile-theme-toggle-light:active {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+  }
+
+  .mobile-theme-toggle-dark {
+    background-color: #1f1f23 !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,0.1) !important;
+  }
+
+  .mobile-theme-toggle-dark:hover,
+  .mobile-theme-toggle-dark:active {
+    background-color: #1f1f23 !important;
+    color: #ffffff !important;
   }
 
   button:disabled {
@@ -647,5 +662,6 @@ video {
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
 
 
