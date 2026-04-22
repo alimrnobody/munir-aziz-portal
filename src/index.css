@@ -181,6 +181,19 @@
     background: transparent !important;
   }
 
+  .mobile-theme-toggle {
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .mobile-theme-toggle:hover {
+    background: transparent !important;
+  }
+
+  .mobile-theme-toggle:active {
+    background: transparent !important;
+  }
+
   button:disabled {
     @apply cursor-not-allowed hover:scale-100 active:scale-100;
   }
@@ -634,3 +647,5 @@ video {
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+
