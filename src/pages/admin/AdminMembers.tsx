@@ -40,6 +40,13 @@ interface SupabaseLikeError {
   hint?: string;
 }
 
+interface CreateMemberResponse {
+  userId: string;
+  email: string;
+  name: string;
+  role: "user" | "admin";
+}
+
 const isOwnerMember = (member: Member) => member.role === "owner";
 const canModifyRole = (currentUserRole: "owner" | "admin" | "user", member: Member, currentUserId: string) =>
   currentUserRole === "owner" && member.role !== "owner" && member.id !== currentUserId;
@@ -162,45 +169,36 @@ const AdminMembers = () => {
       showError("Email and password are required");
       return;
     }
-    const email = newMemberEmail.trim();
+
+    const email = newMemberEmail.trim().toLowerCase();
     const name = newMemberName.trim() || email.split("@")[0];
     const password = newMemberPassword;
     setAddUserLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            name,
-          },
+      const { data, error } = await supabase.functions.invoke<CreateMemberResponse>("create-member", {
+        body: {
+          email,
+          name,
+          password,
+          role: "user",
         },
       });
 
       if (error) {
         const detailedMessage = getReadableError(error);
-        if (/already|registered|exists/i.test(detailedMessage)) {
+        if (/already|registered|exists|duplicate/i.test(detailedMessage)) {
           showError("User already exists");
+        } else if (/Failed to send a request to the Edge Function/i.test(detailedMessage)) {
+          showError("Member creation service is unavailable. Deploy the create-member Edge Function.");
         } else {
           showError(detailedMessage);
         }
         return;
       }
 
-      const userId = data.user?.id;
-      if (!userId) {
-        showError("User created but no user id returned");
-        return;
-      }
-
-      const { error: roleError } = await supabase
-        .from("profiles")
-        .update({ role: "user" })
-        .eq("id", userId);
-
-      if (roleError) {
-        showError(roleError.message || "User created but failed to set default role");
+      if (!data?.userId) {
+        showError("Member created but no user id was returned");
         return;
       }
 
@@ -208,7 +206,7 @@ const AdminMembers = () => {
       setNewMemberEmail("");
       setNewMemberPassword("");
       showSuccess("User created successfully");
-      await new Promise((resolve) => setTimeout(resolve, 700));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       await loadMembers();
     } catch (error: unknown) {
       showError(getReadableError(error));
