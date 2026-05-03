@@ -11,7 +11,7 @@ export const ProgressRing = ({ progress, size = 48, strokeWidth = 4, className =
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (progress / 100) * circumference;
-  const brandPurple = "#714AD6";
+  const brandBlue = "#5627FF";
 
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
@@ -30,14 +30,14 @@ export const ProgressRing = ({ progress, size = 48, strokeWidth = 4, className =
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke={brandPurple}
+          stroke={brandBlue}
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset: offset }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
           strokeLinecap="round"
-          style={{ filter: "drop-shadow(0 0 4px rgba(113, 74, 214, 0.35))" }}
+          style={{ filter: "drop-shadow(0 0 4px rgba(86, 39, 255, 0.35))" }}
         />
       </svg>
       <span className="absolute text-xs font-display font-bold text-foreground">

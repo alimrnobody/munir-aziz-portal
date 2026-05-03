@@ -362,7 +362,7 @@ export const ProtectedVideoPlayer = ({
               onClick={handleSeek}
             >
               <div
-                className="absolute left-0 top-0 h-full rounded-full bg-[#714AD6]"
+                className="absolute left-0 top-0 h-full rounded-full bg-[#5627FF]"
                 style={{ width: `${progress}%` }}
               />
               <div
@@ -397,7 +397,7 @@ export const ProtectedVideoPlayer = ({
                   type="button"
                   onClick={() => markComplete.mutate(lessonId)}
                   disabled={markComplete.isPending}
-                  className="rounded-lg bg-[#714AD6] px-3 py-2 text-sm font-medium text-white transition hover:bg-[#5f3dc4] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-lg bg-[#5627FF] px-3 py-2 text-sm font-medium text-white transition hover:bg-[#441FD1] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {markComplete.isPending ? "Saving..." : "Mark Complete"}
                 </button>

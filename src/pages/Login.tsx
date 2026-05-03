@@ -8,7 +8,6 @@ import type { User } from "@supabase/supabase-js";
 
 const SESSION_VERSION_STORAGE_KEY = "elite_session_version";
 const SESSION_USER_STORAGE_KEY = "elite_session_user_id";
-const OAUTH_LOGIN_PENDING_KEY = "elite_oauth_login_pending";
 const SESSION_SYNC_PENDING_KEY = "elite_session_sync_pending";
 
 const Login = () => {
@@ -17,7 +16,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
   const [statusText, setStatusText] = useState("SYSTEM READY");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -139,12 +137,7 @@ const Login = () => {
         return;
       }
 
-      const rotateSessionVersion = sessionStorage.getItem(OAUTH_LOGIN_PENDING_KEY) === "1";
-      if (rotateSessionVersion) {
-        sessionStorage.removeItem(OAUTH_LOGIN_PENDING_KEY);
-      }
-
-      await validateAuthorizedEmail(data.user, rotateSessionVersion);
+      await validateAuthorizedEmail(data.user, false);
     };
 
     void checkExistingSession();
@@ -193,32 +186,6 @@ const Login = () => {
     }
 
     await validateAuthorizedEmail(data.user, true);
-  };
-
-  const handleGoogleLogin = async () => {
-    setGoogleLoading(true);
-    setErrorMessage("");
-    setStatusText("REDIRECTING...");
-    sessionStorage.setItem(OAUTH_LOGIN_PENDING_KEY, "1");
-    sessionStorage.setItem(SESSION_SYNC_PENDING_KEY, "1");
-
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/login`,
-      },
-    });
-
-    if (error) {
-      sessionStorage.removeItem(OAUTH_LOGIN_PENDING_KEY);
-      sessionStorage.removeItem(SESSION_SYNC_PENDING_KEY);
-      setGoogleLoading(false);
-      setStatusText("AUTH FAILED");
-      setErrorMessage(error.message || "Unable to continue with Google");
-      return;
-    }
-
-    setGoogleLoading(false);
   };
 
   return (
@@ -274,8 +241,11 @@ const Login = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
             >
-              <h1 className="text-[36px] font-bold tracking-[0.05em] text-white">ELITE SQUAD</h1>
-              <p className="mb-6 mt-[6px] text-[16px] font-semibold text-[#714AD6]">By Mr Nobody</p>
+              <img
+                src="/munir-logo.png"
+                alt="Munir Aziz LMS Portal"
+                className="mx-auto mb-6 h-auto max-w-[260px] object-contain sm:max-w-[300px]"
+              />
 
               <div className="inline-flex items-center gap-2 rounded-full border border-border/20 bg-secondary/30 px-4 py-1.5">
                 <motion.div
@@ -299,36 +269,6 @@ const Login = () => {
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.58 }}
-              className="space-y-4"
-            >
-              <button
-                type="button"
-                onClick={() => void handleGoogleLogin()}
-                disabled={googleLoading}
-                className="google-auth-btn flex h-12 w-full items-center justify-center gap-3 rounded-xl text-sm font-medium transition duration-200 hover:shadow-[0_0_24px_rgba(255,255,255,0.35)] disabled:opacity-70"
-              >
-                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white text-[13px] font-bold">
-                  <svg viewBox="0 0 48 48" className="h-4 w-4" aria-hidden="true">
-                    <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 3l5.7-5.7C33.9 6.1 29.2 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.4-.4-3.5z" />
-                    <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15 19 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C33.9 6.1 29.2 4 24 4c-7.7 0-14.3 4.3-17.7 10.7z" />
-                    <path fill="#4CAF50" d="M24 44c5.1 0 9.8-1.9 13.4-5.1l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.3 0-9.8-3.3-11.6-7.9l-6.5 5C9.3 39.6 16.1 44 24 44z" />
-                    <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.4-2.3 4.4-4.1 5.8l6.2 5.2C40.7 36.1 44 30.6 44 24c0-1.2-.1-2.4-.4-3.5z" />
-                  </svg>
-                </span>
-                {googleLoading ? "Connecting..." : "Continue with Google"}
-              </button>
-
-              <div className="flex items-center gap-3">
-                <div className="h-px flex-1 bg-border/40" />
-                <span className="text-xs text-muted-foreground">Or, sign in with your email</span>
-                <div className="h-px flex-1 bg-border/40" />
-              </div>
-            </motion.div>
-
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -386,9 +326,9 @@ const Login = () => {
             >
               <button
                 type="submit"
-                className="flex h-[52px] w-full items-center justify-center rounded-xl font-semibold text-white transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-[#5E3BC4] disabled:opacity-70 disabled:hover:translate-y-0"
+                className="flex h-[52px] w-full items-center justify-center rounded-xl font-semibold text-white transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-[#441FD1] disabled:opacity-70 disabled:hover:translate-y-0"
                 style={{
-                  backgroundColor: "#714AD6",
+                  backgroundColor: "#5627FF",
                   letterSpacing: "0.08em",
                 }}
                 disabled={loading}

@@ -284,7 +284,7 @@ const CourseDetail = () => {
               </div>
               <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-secondary/40 sm:w-40">
                 <motion.div
-                  className="h-full rounded-full bg-[#714AD6]"
+                  className="h-full rounded-full bg-[#5627FF]"
                   initial={{ width: 0 }}
                   animate={{ width: `${course.progress}%` }}
                   transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
@@ -311,8 +311,8 @@ const CourseDetail = () => {
               disabled={lesson.is_locked}
               className={`w-full rounded-xl px-3 py-3 text-left text-white transition sm:px-4 ${
                 lesson.is_locked
-                  ? "bg-[#714AD6]/70 cursor-not-allowed"
-                  : "bg-[#714AD6] hover:bg-[#5f3dc4]"
+                  ? "bg-[#5627FF]/70 cursor-not-allowed"
+                  : "bg-[#5627FF] hover:bg-[#441FD1]"
               }`}
             >
               <div className="flex items-center justify-between gap-3">

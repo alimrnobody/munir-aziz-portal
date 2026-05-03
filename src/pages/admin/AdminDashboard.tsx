@@ -441,7 +441,7 @@ const AdminDashboard = () => {
                 >
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium text-slate-600 dark:text-white/68">{card.label}</p>
-                    <div className="rounded-xl bg-[rgba(113,74,214,0.14)] p-2.5 text-[#714AD6]">
+                    <div className="rounded-xl bg-[rgba(86,39,255,0.14)] p-2.5 text-[#5627FF]">
                       <card.icon size={17} />
                     </div>
                   </div>
@@ -565,7 +565,7 @@ const AdminDashboard = () => {
                           </p>
                           <p className="text-xs text-slate-500 dark:text-white/60">{learner.email}</p>
                         </div>
-                        <p className="text-sm font-semibold text-[#714AD6]">{learner.progressPercentage}%</p>
+                        <p className="text-sm font-semibold text-[#5627FF]">{learner.progressPercentage}%</p>
                       </div>
                       <div className="mt-3">
                         <ProgressBar value={learner.progressPercentage} className="h-2" />

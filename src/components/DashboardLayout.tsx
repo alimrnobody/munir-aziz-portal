@@ -130,7 +130,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
                 type="button"
                 aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
                 onClick={toggleTheme}
-                className="relative hidden h-11 w-[84px] items-center rounded-full border border-primary/35 bg-[linear-gradient(90deg,#714AD6,#8A5AF0)] px-1 shadow-[0_10px_24px_rgba(113,74,214,0.18)] transition-all duration-300 sm:inline-flex"
+                className="relative hidden h-11 w-[84px] items-center rounded-full bg-[linear-gradient(90deg,#5627FF,#3F8CFF)] px-1 shadow-[0_10px_24px_rgba(86,39,255,0.18)] transition-all duration-300 sm:inline-flex"
               >
                 <span className="relative z-10 flex w-full items-center justify-between px-2.5">
                   <Moon
@@ -156,7 +156,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
               <button
                 aria-label="Open settings"
                 onClick={() => navigate("/settings")}
-                className="avatar-trigger inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-[#714AD6] px-0 py-0"
+                className="avatar-trigger inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-[#5627FF] px-0 py-0"
               >
                 <img
                   src={avatarUrl}

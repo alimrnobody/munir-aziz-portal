@@ -206,7 +206,7 @@ const AdminCourses = () => {
                               {course.description || "No description added yet."}
                             </p>
                           </div>
-                          <span className="shrink-0 rounded-full border border-[#714AD6]/14 bg-[#714AD6]/6 px-2.5 py-1 text-[11px] font-medium text-[#714AD6] dark:border-[#714AD6]/18 dark:bg-[#714AD6]/8 dark:text-[#c9b7ff]">
+                          <span className="shrink-0 rounded-full border border-[#5627FF]/14 bg-[#5627FF]/6 px-2.5 py-1 text-[11px] font-medium text-[#5627FF] dark:border-[#5627FF]/18 dark:bg-[#5627FF]/8 dark:text-[#8AA8FF]">
                             {lessonCount} {lessonCount === 1 ? "lesson" : "lessons"}
                           </span>
                         </div>
@@ -215,7 +215,7 @@ const AdminCourses = () => {
                           <button
                             type="button"
                             onClick={() => navigate(`/admin/courses/${course.id}`)}
-                            className="inline-flex items-center gap-1 rounded-lg border border-[#714AD6]/20 bg-[#714AD6]/10 px-3 py-1.5 text-xs font-medium text-white transition hover:border-[#714AD6]/30 hover:bg-[#714AD6] dark:border-[#714AD6]/25 dark:bg-[#714AD6]/90 dark:hover:bg-[#7d55ec]"
+                            className="inline-flex items-center gap-1 rounded-lg border border-[#5627FF]/20 bg-[#5627FF]/10 px-3 py-1.5 text-xs font-medium text-white transition hover:border-[#5627FF]/30 hover:bg-[#5627FF] dark:border-[#5627FF]/25 dark:bg-[#5627FF]/90 dark:hover:bg-[#441FD1]"
                           >
                             <PencilLine size={13} />
                             <span>Edit</span>

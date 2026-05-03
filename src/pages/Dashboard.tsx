@@ -306,27 +306,6 @@ const Dashboard = () => {
   return (
     <DashboardLayout>
       <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-8 sm:mb-12"
-        >
-          <p className="mb-4 text-xs font-display uppercase tracking-[0.4em] text-muted-foreground">
-            WELCOME TO ELITE SQUAD
-          </p>
-          <h1
-            className="mb-4 text-4xl font-extrabold leading-[1.1] sm:text-5xl lg:text-[56px]"
-            style={{ fontFamily: "'Sora', sans-serif" }}
-          >
-            <span className="text-black dark:text-white">Become Elite With</span>
-            <span className="block text-[#714AD6]">Mr Nobody</span>
-          </h1>
-          <p className="max-w-[600px] text-sm leading-relaxed text-black/60 dark:text-white/70 sm:text-base">
-            Learn real digital skills, track your progress, and unlock elite opportunities inside the private training system.
-          </p>
-        </motion.div>
-
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -402,9 +381,9 @@ const Dashboard = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 0.15 + i * 0.08, duration: 0.5 }}
             >
-              <div className="cursor-default rounded-[14px] border border-slate-200/90 bg-white p-5 text-gray-900 shadow-sm transition-all duration-200 ease-in-out hover:border-[#714AD6] dark:border-white/10 dark:bg-[#0b1220] dark:text-white sm:p-6">
+              <div className="cursor-default rounded-[14px] border border-slate-200/90 bg-white p-5 text-gray-900 shadow-sm transition-all duration-200 ease-in-out hover:border-[#5627FF] dark:border-white/10 dark:bg-[#0b1220] dark:text-white sm:p-6">
                 <div className="mb-3 flex items-center justify-between">
-                  <div className="rounded-[10px] bg-[rgba(113,74,214,0.15)] p-[10px] text-gray-700 dark:text-purple-400">
+                  <div className="rounded-[10px] bg-[rgba(86,39,255,0.15)] p-[10px] text-gray-700 dark:text-[#5627FF]">
                     <stat.icon size={18} />
                   </div>
                 </div>

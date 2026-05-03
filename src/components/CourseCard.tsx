@@ -23,10 +23,10 @@ export const CourseCard = ({ course, index }: CourseCardProps) => {
       whileHover={{ y: -3 }}
     >
       <div
-        className={`h-full overflow-hidden rounded-[14px] border bg-white transition-all duration-200 ease-in-out border-[rgba(113,74,214,0.35)] shadow-[0_0_20px_rgba(113,74,214,0.15)] dark:bg-[#0F172A] ${
+        className={`h-full overflow-hidden rounded-[14px] border bg-white transition-all duration-200 ease-in-out border-[rgba(86,39,255,0.35)] shadow-[0_0_20px_rgba(86,39,255,0.15)] dark:bg-[#0F172A] ${
           locked
             ? "cursor-not-allowed opacity-80"
-            : "cursor-pointer hover:border-[#714AD6] hover:shadow-[0_0_30px_rgba(113,74,214,0.25)]"
+            : "cursor-pointer hover:border-[#5627FF] hover:shadow-[0_0_30px_rgba(86,39,255,0.25)]"
         }`}
         onClick={() => {
           if (!locked) {
@@ -70,7 +70,7 @@ export const CourseCard = ({ course, index }: CourseCardProps) => {
           <div className="space-y-2">
             <div className="h-3 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-white/10">
               <div
-                className="h-full rounded-full bg-slate-800 transition-all duration-300 dark:bg-[#714AD6]"
+                className="h-full rounded-full bg-slate-800 transition-all duration-300 dark:bg-[#5627FF]"
                 style={{ width: `${progress}%` }}
               />
             </div>

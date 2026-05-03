@@ -1,4 +1,4 @@
-import { LayoutDashboard, MessageSquare, BookOpen, TrendingUp, Settings, Users2, LogOut } from "lucide-react";
+import { LayoutDashboard, BookOpen, TrendingUp, Settings, Users2, LogOut } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -18,7 +18,6 @@ import {
 
 const appNavItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Community", url: "/community", icon: MessageSquare },
   { title: "Courses", url: "/courses", icon: BookOpen },
   { title: "Progress", url: "/progress", icon: TrendingUp },
   { title: "Settings", url: "/settings", icon: Settings },
@@ -58,23 +57,22 @@ export function AppSidebar() {
             className="mb-7 border-b border-sidebar-border/80 px-5 pb-7"
           >
             <div className="flex h-14 items-center">
-              <span
-                className="whitespace-nowrap text-[28px] font-extrabold uppercase leading-none tracking-[0.04em]"
-                style={{ fontFamily: "'Sora', sans-serif" }}
-              >
-                <span style={{ color: "#714AD6" }}>ELITE</span>
-                <span className={theme === "light" ? "text-black" : "text-white"}>SQUAD</span>
-              </span>
+              <img
+                src={theme === "dark" ? "/munir-logo.png" : "/munir-light.png"}
+                alt="Munir Aziz LMS Portal"
+                className="h-auto max-h-12 w-auto max-w-full object-contain"
+              />
             </div>
           </motion.div>
         )}
 
         {collapsed && (
           <div className="mb-8 flex items-center justify-center border-b border-sidebar-border/80 pb-6">
-            <span className="font-display text-sm font-bold uppercase leading-none tracking-[0.05em]">
-              <span style={{ color: "#714AD6" }}>E</span>
-              <span className={theme === "light" ? "text-black" : "text-white"}>S</span>
-            </span>
+            <img
+              src={theme === "dark" ? "/munir-logo.png" : "/munir-light.png"}
+              alt="Munir Aziz LMS Portal"
+              className="h-auto max-h-9 w-auto max-w-[44px] object-contain"
+            />
           </div>
         )}
 

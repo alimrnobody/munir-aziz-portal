@@ -213,7 +213,7 @@ const Settings = () => {
                 <img
                   src={avatarUrl || fallbackAvatarUrl}
                   alt="Profile avatar"
-                  className="h-16 w-16 rounded-full border-2 border-[#714AD6] object-cover"
+                  className="h-16 w-16 rounded-full border-2 border-[#5627FF] object-cover"
                 />
                 <div>
                   <p className="text-sm text-foreground">{name}</p>

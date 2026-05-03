@@ -693,7 +693,7 @@ const AdminCourseDetail = () => {
                           <div
                             className={`mt-2 rounded-lg border border-dashed px-3 py-2 text-xs transition dark:bg-[#111827] ${
                               dragActiveLessonId === lesson.id
-                                ? "border-[#714AD6] bg-[#714AD6]/5 dark:border-[#714AD6]"
+                                ? "border-[#5627FF] bg-[#5627FF]/5 dark:border-[#5627FF]"
                                 : "border-slate-300 text-slate-500 dark:border-white/10 dark:text-white/45"
                             }`}
                             onDragOver={(event) => {

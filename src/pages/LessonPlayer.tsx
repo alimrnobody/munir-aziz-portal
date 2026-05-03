@@ -444,7 +444,7 @@ const LessonPlayer = () => {
                         rel="noreferrer"
                         className="flex items-center gap-3 rounded-lg border border-border/20 px-3 py-2 text-sm text-foreground transition hover:bg-secondary/20"
                       >
-                        <ResourceIcon size={16} className="shrink-0 text-[#714AD6]" />
+                        <ResourceIcon size={16} className="shrink-0 text-[#5627FF]" />
                         <span className="truncate">{resource.title}</span>
                       </a>
                     );
@@ -493,7 +493,7 @@ const LessonPlayer = () => {
             <div className="rounded-[22px] border border-border/15 bg-card/80 p-2.5 shadow-[0_10px_32px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-3 lg:sticky lg:top-[4.75rem]">
               <div className="flex items-center justify-between gap-2 px-1 pb-3">
                 <div className="flex items-center gap-2">
-                  <div className="h-4 w-1.5 rounded-full bg-primary shadow-[0_0_0_1px_rgba(113,74,214,0.18)]" />
+                  <div className="h-4 w-1.5 rounded-full bg-primary shadow-[0_0_0_1px_rgba(86,39,255,0.18)]" />
                   <h3 className="text-[11px] font-display tracking-[0.25em] uppercase text-muted-foreground">
                     Lessons
                   </h3>
