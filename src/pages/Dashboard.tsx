@@ -330,7 +330,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="overflow-x-auto pb-2">
+          <div className="heatmap-scroll overflow-x-auto pb-2">
             <div className="min-w-[720px]">
               <div className="mb-4 ml-12 grid grid-flow-col gap-1 text-sm font-medium text-muted-foreground">
                 {monthMarkers.map((label, index) => (
